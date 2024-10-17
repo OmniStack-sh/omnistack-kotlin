@@ -32,7 +32,7 @@ class CompletionServiceTest {
                                         ChatCompletionCreateParams.Message
                                             .ChatCompletionRequestSystemMessage
                                             .Content
-                                            .ofString("string")
+                                            .ofTextContent("string")
                                     )
                                     .role(
                                         ChatCompletionCreateParams.Message
