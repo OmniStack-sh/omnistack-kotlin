@@ -705,7 +705,9 @@ constructor(
          * if a prompt is not specified the model will generate as if from the beginning of a new
          * document.
          */
-        fun prompt(strings: List<String>) = apply { this.prompt = Prompt.ofStrings(strings) }
+        fun promptOfStrings(strings: List<String>) = apply {
+            this.prompt = Prompt.ofStrings(strings)
+        }
 
         /**
          * The prompt(s) to generate completions for, encoded as a string, array of strings, array
@@ -715,7 +717,7 @@ constructor(
          * if a prompt is not specified the model will generate as if from the beginning of a new
          * document.
          */
-        fun prompt(longs: List<Long>) = apply { this.prompt = Prompt.ofLongs(longs) }
+        fun promptOfLongs(longs: List<Long>) = apply { this.prompt = Prompt.ofLongs(longs) }
 
         /**
          * The prompt(s) to generate completions for, encoded as a string, array of strings, array
@@ -725,7 +727,7 @@ constructor(
          * if a prompt is not specified the model will generate as if from the beginning of a new
          * document.
          */
-        fun prompt(longs: List<List<Long>>) = apply { this.prompt = Prompt.ofLongs(longs) }
+        fun promptOfLists(lists: List<List<Long>>) = apply { this.prompt = Prompt.ofLists(lists) }
 
         /**
          * Generates `best_of` completions server-side and returns the "best" (the one with the
@@ -836,7 +838,7 @@ constructor(
          * Up to 4 sequences where the API will stop generating further tokens. The returned text
          * will not contain the stop sequence.
          */
-        fun stop(strings: List<String>) = apply { this.stop = Stop.ofStrings(strings) }
+        fun stopOfStrings(strings: List<String>) = apply { this.stop = Stop.ofStrings(strings) }
 
         /**
          * Whether to stream back partial progress. If set, tokens will be sent as data-only
@@ -1145,7 +1147,7 @@ constructor(
         private val string: String? = null,
         private val strings: List<String>? = null,
         private val longs: List<Long>? = null,
-        private val longs: List<List<Long>>? = null,
+        private val lists: List<List<Long>>? = null,
         private val _json: JsonValue? = null,
     ) {
 
@@ -1157,7 +1159,7 @@ constructor(
 
         fun longs(): List<Long>? = longs
 
-        fun longs(): List<List<Long>>? = longs
+        fun lists(): List<List<Long>>? = lists
 
         fun isString(): Boolean = string != null
 
@@ -1165,7 +1167,7 @@ constructor(
 
         fun isLongs(): Boolean = longs != null
 
-        fun isLongs(): Boolean = longs != null
+        fun isLists(): Boolean = lists != null
 
         fun asString(): String = string.getOrThrow("string")
 
@@ -1173,7 +1175,7 @@ constructor(
 
         fun asLongs(): List<Long> = longs.getOrThrow("longs")
 
-        fun asLongs(): List<List<Long>> = longs.getOrThrow("longs")
+        fun asLists(): List<List<Long>> = lists.getOrThrow("lists")
 
         fun _json(): JsonValue? = _json
 
@@ -1182,14 +1184,14 @@ constructor(
                 string != null -> visitor.visitString(string)
                 strings != null -> visitor.visitStrings(strings)
                 longs != null -> visitor.visitLongs(longs)
-                longs != null -> visitor.visitLongs(longs)
+                lists != null -> visitor.visitLists(lists)
                 else -> visitor.unknown(_json)
             }
         }
 
         fun validate(): Prompt = apply {
             if (!validated) {
-                if (string == null && strings == null && longs == null && longs == null) {
+                if (string == null && strings == null && longs == null && lists == null) {
                     throw OmnistackInvalidDataException("Unknown Prompt: $_json")
                 }
                 validated = true
@@ -1201,11 +1203,11 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Prompt && this.string == other.string && this.strings == other.strings && this.longs == other.longs && this.longs == other.longs /* spotless:on */
+            return /* spotless:off */ other is Prompt && this.string == other.string && this.strings == other.strings && this.longs == other.longs && this.lists == other.lists /* spotless:on */
         }
 
         override fun hashCode(): Int {
-            return /* spotless:off */ Objects.hash(string, strings, longs, longs) /* spotless:on */
+            return /* spotless:off */ Objects.hash(string, strings, longs, lists) /* spotless:on */
         }
 
         override fun toString(): String {
@@ -1213,7 +1215,7 @@ constructor(
                 string != null -> "Prompt{string=$string}"
                 strings != null -> "Prompt{strings=$strings}"
                 longs != null -> "Prompt{longs=$longs}"
-                longs != null -> "Prompt{longs=$longs}"
+                lists != null -> "Prompt{lists=$lists}"
                 _json != null -> "Prompt{_unknown=$_json}"
                 else -> throw IllegalStateException("Invalid Prompt")
             }
@@ -1227,7 +1229,7 @@ constructor(
 
             fun ofLongs(longs: List<Long>) = Prompt(longs = longs)
 
-            fun ofLongs(longs: List<List<Long>>) = Prompt(longs = longs)
+            fun ofLists(lists: List<List<Long>>) = Prompt(lists = lists)
         }
 
         interface Visitor<out T> {
@@ -1238,7 +1240,7 @@ constructor(
 
             fun visitLongs(longs: List<Long>): T
 
-            fun visitLongs(longs: List<List<Long>>): T
+            fun visitLists(lists: List<List<Long>>): T
 
             fun unknown(json: JsonValue?): T {
                 throw OmnistackInvalidDataException("Unknown Prompt: $json")
@@ -1259,7 +1261,7 @@ constructor(
                     return Prompt(longs = it, _json = json)
                 }
                 tryDeserialize(node, jacksonTypeRef<List<List<Long>>>())?.let {
-                    return Prompt(longs = it, _json = json)
+                    return Prompt(lists = it, _json = json)
                 }
 
                 return Prompt(_json = json)
@@ -1277,7 +1279,7 @@ constructor(
                     value.string != null -> generator.writeObject(value.string)
                     value.strings != null -> generator.writeObject(value.strings)
                     value.longs != null -> generator.writeObject(value.longs)
-                    value.longs != null -> generator.writeObject(value.longs)
+                    value.lists != null -> generator.writeObject(value.lists)
                     value._json != null -> generator.writeObject(value._json)
                     else -> throw IllegalStateException("Invalid Prompt")
                 }

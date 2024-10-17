@@ -33,9 +33,9 @@ configure<PublishingExtension> {
                 }
 
                 scm {
-                    connection.set("scm:git:git://github.com/stainless-sdks/omnistack-kotlin.git")
-                    developerConnection.set("scm:git:git://github.com/stainless-sdks/omnistack-kotlin.git")
-                    url.set("https://github.com/stainless-sdks/omnistack-kotlin")
+                    connection.set("scm:git:git://github.com/OmniStack-sh/omnistack-kotlin.git")
+                    developerConnection.set("scm:git:git://github.com/OmniStack-sh/omnistack-kotlin.git")
+                    url.set("https://github.com/OmniStack-sh/omnistack-kotlin")
                 }
 
                 versionMapping {
