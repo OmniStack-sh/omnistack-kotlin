@@ -21,7 +21,7 @@ import com.omnistack.api.core.JsonField
 import com.omnistack.api.core.JsonValue
 import com.omnistack.api.core.NoAutoDetect
 import com.omnistack.api.core.getOrThrow
-import com.omnistack.api.core.toUnmodifiable
+import com.omnistack.api.core.toImmutable
 import com.omnistack.api.errors.OmnistackInvalidDataException
 import com.omnistack.api.models.*
 import java.util.Objects
@@ -552,7 +552,7 @@ constructor(
                     temperature,
                     topP,
                     user,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -958,9 +958,9 @@ constructor(
                 temperature,
                 topP,
                 user,
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalBodyProperties.toUnmodifiable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -1049,6 +1049,7 @@ constructor(
 
             override fun ObjectCodec.deserialize(node: JsonNode): Model {
                 val json = JsonValue.fromJsonNode(node)
+
                 tryDeserialize(node, jacksonTypeRef<String>())?.let {
                     return Model(string = it, _json = json)
                 }
@@ -1251,6 +1252,7 @@ constructor(
 
             override fun ObjectCodec.deserialize(node: JsonNode): Prompt {
                 val json = JsonValue.fromJsonNode(node)
+
                 tryDeserialize(node, jacksonTypeRef<String>())?.let {
                     return Prompt(string = it, _json = json)
                 }
@@ -1340,7 +1342,7 @@ constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): LogitBias = LogitBias(additionalProperties.toUnmodifiable())
+            fun build(): LogitBias = LogitBias(additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {
@@ -1448,6 +1450,7 @@ constructor(
 
             override fun ObjectCodec.deserialize(node: JsonNode): Stop {
                 val json = JsonValue.fromJsonNode(node)
+
                 tryDeserialize(node, jacksonTypeRef<String>())?.let {
                     return Stop(string = it, _json = json)
                 }
@@ -1538,7 +1541,7 @@ constructor(
             }
 
             fun build(): StreamOptions =
-                StreamOptions(includeUsage, additionalProperties.toUnmodifiable())
+                StreamOptions(includeUsage, additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {

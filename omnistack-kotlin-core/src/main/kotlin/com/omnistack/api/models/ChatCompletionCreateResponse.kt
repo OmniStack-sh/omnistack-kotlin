@@ -13,7 +13,7 @@ import com.omnistack.api.core.JsonField
 import com.omnistack.api.core.JsonMissing
 import com.omnistack.api.core.JsonValue
 import com.omnistack.api.core.NoAutoDetect
-import com.omnistack.api.core.toUnmodifiable
+import com.omnistack.api.core.toImmutable
 import com.omnistack.api.errors.OmnistackInvalidDataException
 import java.util.Objects
 
@@ -248,14 +248,14 @@ private constructor(
         fun build(): ChatCompletionCreateResponse =
             ChatCompletionCreateResponse(
                 id,
-                choices.map { it.toUnmodifiable() },
+                choices.map { it.toImmutable() },
                 created,
                 model,
                 serviceTier,
                 systemFingerprint,
                 object_,
                 usage,
-                additionalProperties.toUnmodifiable(),
+                additionalProperties.toImmutable(),
             )
     }
 
@@ -411,7 +411,7 @@ private constructor(
                     index,
                     message,
                     logprobs,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -578,9 +578,9 @@ private constructor(
 
                 fun build(): Logprobs =
                     Logprobs(
-                        content.map { it.toUnmodifiable() },
-                        refusal.map { it.toUnmodifiable() },
-                        additionalProperties.toUnmodifiable(),
+                        content.map { it.toImmutable() },
+                        refusal.map { it.toImmutable() },
+                        additionalProperties.toImmutable(),
                     )
             }
 
@@ -766,9 +766,9 @@ private constructor(
                         Content(
                             token,
                             logprob,
-                            bytes.map { it.toUnmodifiable() },
-                            topLogprobs.map { it.toUnmodifiable() },
-                            additionalProperties.toUnmodifiable(),
+                            bytes.map { it.toImmutable() },
+                            topLogprobs.map { it.toImmutable() },
+                            additionalProperties.toImmutable(),
                         )
                 }
 
@@ -920,8 +920,8 @@ private constructor(
                             TopLogprob(
                                 token,
                                 logprob,
-                                bytes.map { it.toUnmodifiable() },
-                                additionalProperties.toUnmodifiable(),
+                                bytes.map { it.toImmutable() },
+                                additionalProperties.toImmutable(),
                             )
                     }
 
@@ -1149,9 +1149,9 @@ private constructor(
                         Refusal(
                             token,
                             logprob,
-                            bytes.map { it.toUnmodifiable() },
-                            topLogprobs.map { it.toUnmodifiable() },
-                            additionalProperties.toUnmodifiable(),
+                            bytes.map { it.toImmutable() },
+                            topLogprobs.map { it.toImmutable() },
+                            additionalProperties.toImmutable(),
                         )
                 }
 
@@ -1303,8 +1303,8 @@ private constructor(
                             TopLogprob(
                                 token,
                                 logprob,
-                                bytes.map { it.toUnmodifiable() },
-                                additionalProperties.toUnmodifiable(),
+                                bytes.map { it.toImmutable() },
+                                additionalProperties.toImmutable(),
                             )
                     }
 
@@ -1532,10 +1532,10 @@ private constructor(
                     Message(
                         content,
                         refusal,
-                        toolCalls.map { it.toUnmodifiable() },
+                        toolCalls.map { it.toImmutable() },
                         role,
                         functionCall,
-                        additionalProperties.toUnmodifiable(),
+                        additionalProperties.toImmutable(),
                     )
             }
 
@@ -1705,7 +1705,7 @@ private constructor(
                         FunctionCall(
                             arguments,
                             name,
-                            additionalProperties.toUnmodifiable(),
+                            additionalProperties.toImmutable(),
                         )
                 }
 
@@ -1838,7 +1838,7 @@ private constructor(
                             id,
                             type,
                             function,
-                            additionalProperties.toUnmodifiable(),
+                            additionalProperties.toImmutable(),
                         )
                 }
 
@@ -1955,7 +1955,7 @@ private constructor(
                             Function(
                                 name,
                                 arguments,
-                                additionalProperties.toUnmodifiable(),
+                                additionalProperties.toImmutable(),
                             )
                     }
 
@@ -2344,7 +2344,7 @@ private constructor(
                     promptTokens,
                     totalTokens,
                     completionTokensDetails,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -2422,7 +2422,7 @@ private constructor(
                     }
 
                 fun build(): CompletionTokensDetails =
-                    CompletionTokensDetails(reasoningTokens, additionalProperties.toUnmodifiable())
+                    CompletionTokensDetails(reasoningTokens, additionalProperties.toImmutable())
             }
 
             override fun equals(other: Any?): Boolean {

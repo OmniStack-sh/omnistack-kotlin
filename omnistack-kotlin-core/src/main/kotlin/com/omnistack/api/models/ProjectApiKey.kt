@@ -13,7 +13,7 @@ import com.omnistack.api.core.JsonField
 import com.omnistack.api.core.JsonMissing
 import com.omnistack.api.core.JsonValue
 import com.omnistack.api.core.NoAutoDetect
-import com.omnistack.api.core.toUnmodifiable
+import com.omnistack.api.core.toImmutable
 import com.omnistack.api.errors.OmnistackInvalidDataException
 import java.util.Objects
 
@@ -178,7 +178,7 @@ private constructor(
                 createdAt,
                 id,
                 owner,
-                additionalProperties.toUnmodifiable(),
+                additionalProperties.toImmutable(),
             )
     }
 
@@ -343,7 +343,7 @@ private constructor(
                     type,
                     user,
                     serviceAccount,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 

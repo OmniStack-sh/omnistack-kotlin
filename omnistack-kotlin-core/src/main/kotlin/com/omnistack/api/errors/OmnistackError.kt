@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.omnistack.api.core.JsonValue
 import com.omnistack.api.core.NoAutoDetect
-import com.omnistack.api.core.toUnmodifiable
+import com.omnistack.api.core.toImmutable
 import java.util.Objects
 
 @JsonDeserialize(builder = OmnistackError.Builder::class)
@@ -37,7 +37,7 @@ constructor(
 
     companion object {
 
-        @JvmStatic fun builder() = Builder()
+        fun builder() = Builder()
     }
 
     class Builder {
@@ -60,6 +60,6 @@ constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun build(): OmnistackError = OmnistackError(additionalProperties.toUnmodifiable())
+        fun build(): OmnistackError = OmnistackError(additionalProperties.toImmutable())
     }
 }
