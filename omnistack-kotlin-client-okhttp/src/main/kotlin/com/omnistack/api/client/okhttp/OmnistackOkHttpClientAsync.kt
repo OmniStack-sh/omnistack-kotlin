@@ -23,7 +23,7 @@ class OmnistackOkHttpClientAsync private constructor() {
 
         private var clientOptions: ClientOptions.Builder = ClientOptions.builder()
         private var baseUrl: String = ClientOptions.PRODUCTION_URL
-        // default timeout for client is 1 minute
+        // The default timeout for the client is 1 minute.
         private var timeout: Duration = Duration.ofSeconds(60)
         private var proxy: Proxy? = null
 
@@ -52,6 +52,24 @@ class OmnistackOkHttpClientAsync private constructor() {
 
         fun removeHeader(name: String) = apply { clientOptions.removeHeader(name) }
 
+        fun queryParams(queryParams: Map<String, Iterable<String>>) = apply {
+            clientOptions.queryParams(queryParams)
+        }
+
+        fun putQueryParam(key: String, value: String) = apply {
+            clientOptions.putQueryParam(key, value)
+        }
+
+        fun putQueryParams(key: String, values: Iterable<String>) = apply {
+            clientOptions.putQueryParams(key, values)
+        }
+
+        fun putAllQueryParams(queryParams: Map<String, Iterable<String>>) = apply {
+            clientOptions.putAllQueryParams(queryParams)
+        }
+
+        fun removeQueryParam(key: String) = apply { clientOptions.removeQueryParam(key) }
+
         fun timeout(timeout: Duration) = apply { this.timeout = timeout }
 
         fun maxRetries(maxRetries: Int) = apply { clientOptions.maxRetries(maxRetries) }
@@ -66,8 +84,8 @@ class OmnistackOkHttpClientAsync private constructor() {
 
         fun fromEnv() = apply { clientOptions.fromEnv() }
 
-        fun build(): OmnistackClientAsync {
-            return OmnistackClientAsyncImpl(
+        fun build(): OmnistackClientAsync =
+            OmnistackClientAsyncImpl(
                 clientOptions
                     .httpClient(
                         OkHttpClient.builder()
@@ -78,6 +96,5 @@ class OmnistackOkHttpClientAsync private constructor() {
                     )
                     .build()
             )
-        }
     }
 }
