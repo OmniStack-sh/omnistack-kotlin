@@ -33,7 +33,7 @@ class ChatCompletionCreateParamsTest {
                     )
                 )
             )
-            .model(ChatCompletionCreateParams.Model.ofString("string"))
+            .model(ChatCompletionCreateParams.Model.O1_PREVIEW)
             .frequencyPenalty(2.0)
             .functionCall(
                 ChatCompletionCreateParams.FunctionCall.ofUnionMember0(
@@ -130,7 +130,7 @@ class ChatCompletionCreateParamsTest {
                         )
                     )
                 )
-                .model(ChatCompletionCreateParams.Model.ofString("string"))
+                .model(ChatCompletionCreateParams.Model.O1_PREVIEW)
                 .frequencyPenalty(2.0)
                 .functionCall(
                     ChatCompletionCreateParams.FunctionCall.ofUnionMember0(
@@ -226,7 +226,7 @@ class ChatCompletionCreateParamsTest {
                     )
                 )
             )
-        assertThat(body.model()).isEqualTo(ChatCompletionCreateParams.Model.ofString("string"))
+        assertThat(body.model()).isEqualTo(ChatCompletionCreateParams.Model.O1_PREVIEW)
         assertThat(body.frequencyPenalty()).isEqualTo(2.0)
         assertThat(body.functionCall())
             .isEqualTo(
@@ -328,7 +328,7 @@ class ChatCompletionCreateParamsTest {
                         )
                     )
                 )
-                .model(ChatCompletionCreateParams.Model.ofString("string"))
+                .model(ChatCompletionCreateParams.Model.O1_PREVIEW)
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
@@ -354,6 +354,6 @@ class ChatCompletionCreateParamsTest {
                     )
                 )
             )
-        assertThat(body.model()).isEqualTo(ChatCompletionCreateParams.Model.ofString("string"))
+        assertThat(body.model()).isEqualTo(ChatCompletionCreateParams.Model.O1_PREVIEW)
     }
 }

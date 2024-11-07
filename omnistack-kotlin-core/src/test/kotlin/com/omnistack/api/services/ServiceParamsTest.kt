@@ -56,7 +56,7 @@ class ServiceParamsTest {
 
         val params =
             CompletionCreateParams.builder()
-                .model(CompletionCreateParams.Model.ofString("string"))
+                .model(CompletionCreateParams.Model.GPT_3_5_TURBO_INSTRUCT)
                 .prompt(CompletionCreateParams.Prompt.ofString("This is a test."))
                 .bestOf(20L)
                 .echo(true)
