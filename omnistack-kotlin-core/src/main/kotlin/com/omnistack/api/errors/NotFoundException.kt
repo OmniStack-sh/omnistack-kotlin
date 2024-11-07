@@ -1,9 +1,9 @@
 package com.omnistack.api.errors
 
-import com.google.common.collect.ListMultimap
+import com.omnistack.api.core.http.Headers
 
 class NotFoundException(
-    headers: ListMultimap<String, String>,
+    headers: Headers,
     body: String,
     error: OmnistackError,
 ) : OmnistackServiceException(404, headers, body, error)
