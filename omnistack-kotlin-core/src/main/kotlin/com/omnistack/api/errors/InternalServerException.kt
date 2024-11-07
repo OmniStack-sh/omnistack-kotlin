@@ -1,10 +1,10 @@
 package com.omnistack.api.errors
 
-import com.google.common.collect.ListMultimap
+import com.omnistack.api.core.http.Headers
 
 class InternalServerException(
     statusCode: Int,
-    headers: ListMultimap<String, String>,
+    headers: Headers,
     body: String,
     error: OmnistackError,
 ) : OmnistackServiceException(statusCode, headers, body, error)

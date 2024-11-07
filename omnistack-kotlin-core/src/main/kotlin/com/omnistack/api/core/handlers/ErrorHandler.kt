@@ -3,7 +3,7 @@
 package com.omnistack.api.core.handlers
 
 import com.fasterxml.jackson.databind.json.JsonMapper
-import com.google.common.collect.ListMultimap
+import com.omnistack.api.core.http.Headers
 import com.omnistack.api.core.http.HttpResponse
 import com.omnistack.api.core.http.HttpResponse.Handler
 import com.omnistack.api.errors.BadRequestException
@@ -114,7 +114,7 @@ private fun HttpResponse.buffered(): HttpResponse {
     return object : HttpResponse {
         override fun statusCode(): Int = this@buffered.statusCode()
 
-        override fun headers(): ListMultimap<String, String> = this@buffered.headers()
+        override fun headers(): Headers = this@buffered.headers()
 
         override fun body(): InputStream = ByteArrayInputStream(body)
 
