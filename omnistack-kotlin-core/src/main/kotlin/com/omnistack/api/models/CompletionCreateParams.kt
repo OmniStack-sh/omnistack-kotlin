@@ -668,16 +668,7 @@ constructor(
          * API to see all of your available models, or see our
          * [Model overview](/docs/models/overview) for descriptions of them.
          */
-        fun model(string: String) = apply { this.model = Model.ofString(string) }
-
-        /**
-         * ID of the model to use. You can use the [List models](/docs/api-reference/models/list)
-         * API to see all of your available models, or see our
-         * [Model overview](/docs/models/overview) for descriptions of them.
-         */
-        fun model(unionMember1: Model.UnionMember1) = apply {
-            this.model = Model.ofUnionMember1(unionMember1)
-        }
+        fun model(value: String) = apply { this.model = Model.of(value) }
 
         /**
          * The prompt(s) to generate completions for, encoded as a string, array of strings, array
@@ -1032,181 +1023,67 @@ constructor(
             )
     }
 
-    @JsonDeserialize(using = Model.Deserializer::class)
-    @JsonSerialize(using = Model.Serializer::class)
     class Model
+    @JsonCreator
     private constructor(
-        private val string: String? = null,
-        private val unionMember1: UnionMember1? = null,
-        private val _json: JsonValue? = null,
-    ) {
+        private val value: JsonField<String>,
+    ) : Enum {
 
-        private var validated: Boolean = false
-
-        fun string(): String? = string
-
-        fun unionMember1(): UnionMember1? = unionMember1
-
-        fun isString(): Boolean = string != null
-
-        fun isUnionMember1(): Boolean = unionMember1 != null
-
-        fun asString(): String = string.getOrThrow("string")
-
-        fun asUnionMember1(): UnionMember1 = unionMember1.getOrThrow("unionMember1")
-
-        fun _json(): JsonValue? = _json
-
-        fun <T> accept(visitor: Visitor<T>): T {
-            return when {
-                string != null -> visitor.visitString(string)
-                unionMember1 != null -> visitor.visitUnionMember1(unionMember1)
-                else -> visitor.unknown(_json)
-            }
-        }
-
-        fun validate(): Model = apply {
-            if (!validated) {
-                if (string == null && unionMember1 == null) {
-                    throw OmnistackInvalidDataException("Unknown Model: $_json")
-                }
-                validated = true
-            }
-        }
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
                 return true
             }
 
-            return /* spotless:off */ other is Model && this.string == other.string && this.unionMember1 == other.unionMember1 /* spotless:on */
+            return /* spotless:off */ other is Model && this.value == other.value /* spotless:on */
         }
 
-        override fun hashCode(): Int {
-            return /* spotless:off */ Objects.hash(string, unionMember1) /* spotless:on */
-        }
+        override fun hashCode() = value.hashCode()
 
-        override fun toString(): String {
-            return when {
-                string != null -> "Model{string=$string}"
-                unionMember1 != null -> "Model{unionMember1=$unionMember1}"
-                _json != null -> "Model{_unknown=$_json}"
-                else -> throw IllegalStateException("Invalid Model")
-            }
-        }
+        override fun toString() = value.toString()
 
         companion object {
 
-            fun ofString(string: String) = Model(string = string)
+            val GPT_3_5_TURBO_INSTRUCT = Model(JsonField.of("gpt-3.5-turbo-instruct"))
 
-            fun ofUnionMember1(unionMember1: UnionMember1) = Model(unionMember1 = unionMember1)
+            val DAVINCI_002 = Model(JsonField.of("davinci-002"))
+
+            val BABBAGE_002 = Model(JsonField.of("babbage-002"))
+
+            fun of(value: String) = Model(JsonField.of(value))
         }
 
-        interface Visitor<out T> {
-
-            fun visitString(string: String): T
-
-            fun visitUnionMember1(unionMember1: UnionMember1): T
-
-            fun unknown(json: JsonValue?): T {
-                throw OmnistackInvalidDataException("Unknown Model: $json")
-            }
+        enum class Known {
+            GPT_3_5_TURBO_INSTRUCT,
+            DAVINCI_002,
+            BABBAGE_002,
         }
 
-        class Deserializer : BaseDeserializer<Model>(Model::class) {
-
-            override fun ObjectCodec.deserialize(node: JsonNode): Model {
-                val json = JsonValue.fromJsonNode(node)
-
-                tryDeserialize(node, jacksonTypeRef<String>())?.let {
-                    return Model(string = it, _json = json)
-                }
-                tryDeserialize(node, jacksonTypeRef<UnionMember1>())?.let {
-                    return Model(unionMember1 = it, _json = json)
-                }
-
-                return Model(_json = json)
-            }
+        enum class Value {
+            GPT_3_5_TURBO_INSTRUCT,
+            DAVINCI_002,
+            BABBAGE_002,
+            _UNKNOWN,
         }
 
-        class Serializer : BaseSerializer<Model>(Model::class) {
-
-            override fun serialize(
-                value: Model,
-                generator: JsonGenerator,
-                provider: SerializerProvider
-            ) {
-                when {
-                    value.string != null -> generator.writeObject(value.string)
-                    value.unionMember1 != null -> generator.writeObject(value.unionMember1)
-                    value._json != null -> generator.writeObject(value._json)
-                    else -> throw IllegalStateException("Invalid Model")
-                }
-            }
-        }
-
-        class UnionMember1
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
-
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return /* spotless:off */ other is UnionMember1 && this.value == other.value /* spotless:on */
+        fun value(): Value =
+            when (this) {
+                GPT_3_5_TURBO_INSTRUCT -> Value.GPT_3_5_TURBO_INSTRUCT
+                DAVINCI_002 -> Value.DAVINCI_002
+                BABBAGE_002 -> Value.BABBAGE_002
+                else -> Value._UNKNOWN
             }
 
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-
-            companion object {
-
-                val GPT_3_5_TURBO_INSTRUCT = UnionMember1(JsonField.of("gpt-3.5-turbo-instruct"))
-
-                val DAVINCI_002 = UnionMember1(JsonField.of("davinci-002"))
-
-                val BABBAGE_002 = UnionMember1(JsonField.of("babbage-002"))
-
-                fun of(value: String) = UnionMember1(JsonField.of(value))
+        fun known(): Known =
+            when (this) {
+                GPT_3_5_TURBO_INSTRUCT -> Known.GPT_3_5_TURBO_INSTRUCT
+                DAVINCI_002 -> Known.DAVINCI_002
+                BABBAGE_002 -> Known.BABBAGE_002
+                else -> throw OmnistackInvalidDataException("Unknown Model: $value")
             }
 
-            enum class Known {
-                GPT_3_5_TURBO_INSTRUCT,
-                DAVINCI_002,
-                BABBAGE_002,
-            }
-
-            enum class Value {
-                GPT_3_5_TURBO_INSTRUCT,
-                DAVINCI_002,
-                BABBAGE_002,
-                _UNKNOWN,
-            }
-
-            fun value(): Value =
-                when (this) {
-                    GPT_3_5_TURBO_INSTRUCT -> Value.GPT_3_5_TURBO_INSTRUCT
-                    DAVINCI_002 -> Value.DAVINCI_002
-                    BABBAGE_002 -> Value.BABBAGE_002
-                    else -> Value._UNKNOWN
-                }
-
-            fun known(): Known =
-                when (this) {
-                    GPT_3_5_TURBO_INSTRUCT -> Known.GPT_3_5_TURBO_INSTRUCT
-                    DAVINCI_002 -> Known.DAVINCI_002
-                    BABBAGE_002 -> Known.BABBAGE_002
-                    else -> throw OmnistackInvalidDataException("Unknown UnionMember1: $value")
-                }
-
-            fun asString(): String = _value().asStringOrThrow()
-        }
+        fun asString(): String = _value().asStringOrThrow()
     }
 
     @JsonDeserialize(using = Prompt.Deserializer::class)
