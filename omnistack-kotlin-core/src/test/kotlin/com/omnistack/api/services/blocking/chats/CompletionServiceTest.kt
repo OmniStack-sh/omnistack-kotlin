@@ -45,7 +45,7 @@ class CompletionServiceTest {
                             )
                         )
                     )
-                    .model(ChatCompletionCreateParams.Model.ofString("string"))
+                    .model(ChatCompletionCreateParams.Model.O1_PREVIEW)
                     .frequencyPenalty(2.0)
                     .functionCall(
                         ChatCompletionCreateParams.FunctionCall.ofUnionMember0(

@@ -79,7 +79,7 @@ import com.omnistack.api.models.CompletionCreateParams
 import com.omnistack.api.models.CompletionCreateResponse
 
 val params = CompletionCreateParams.builder()
-    .model(CompletionCreateParams.Model.ofString("string"))
+    .model("string")
     .prompt(CompletionCreateParams.Prompt.ofString("This is a test."))
     .build()
 val completion = client.completions().create(params)

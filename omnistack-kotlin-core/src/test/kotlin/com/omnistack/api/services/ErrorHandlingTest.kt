@@ -58,7 +58,7 @@ class ErrorHandlingTest {
     fun completionsCreate200() {
         val params =
             CompletionCreateParams.builder()
-                .model(CompletionCreateParams.Model.ofString("string"))
+                .model(CompletionCreateParams.Model.GPT_3_5_TURBO_INSTRUCT)
                 .prompt(CompletionCreateParams.Prompt.ofString("This is a test."))
                 .bestOf(20L)
                 .echo(true)
@@ -133,7 +133,7 @@ class ErrorHandlingTest {
     fun completionsCreate400() {
         val params =
             CompletionCreateParams.builder()
-                .model(CompletionCreateParams.Model.ofString("string"))
+                .model(CompletionCreateParams.Model.GPT_3_5_TURBO_INSTRUCT)
                 .prompt(CompletionCreateParams.Prompt.ofString("This is a test."))
                 .bestOf(20L)
                 .echo(true)
@@ -170,7 +170,7 @@ class ErrorHandlingTest {
     fun completionsCreate401() {
         val params =
             CompletionCreateParams.builder()
-                .model(CompletionCreateParams.Model.ofString("string"))
+                .model(CompletionCreateParams.Model.GPT_3_5_TURBO_INSTRUCT)
                 .prompt(CompletionCreateParams.Prompt.ofString("This is a test."))
                 .bestOf(20L)
                 .echo(true)
@@ -207,7 +207,7 @@ class ErrorHandlingTest {
     fun completionsCreate403() {
         val params =
             CompletionCreateParams.builder()
-                .model(CompletionCreateParams.Model.ofString("string"))
+                .model(CompletionCreateParams.Model.GPT_3_5_TURBO_INSTRUCT)
                 .prompt(CompletionCreateParams.Prompt.ofString("This is a test."))
                 .bestOf(20L)
                 .echo(true)
@@ -248,7 +248,7 @@ class ErrorHandlingTest {
     fun completionsCreate404() {
         val params =
             CompletionCreateParams.builder()
-                .model(CompletionCreateParams.Model.ofString("string"))
+                .model(CompletionCreateParams.Model.GPT_3_5_TURBO_INSTRUCT)
                 .prompt(CompletionCreateParams.Prompt.ofString("This is a test."))
                 .bestOf(20L)
                 .echo(true)
@@ -285,7 +285,7 @@ class ErrorHandlingTest {
     fun completionsCreate422() {
         val params =
             CompletionCreateParams.builder()
-                .model(CompletionCreateParams.Model.ofString("string"))
+                .model(CompletionCreateParams.Model.GPT_3_5_TURBO_INSTRUCT)
                 .prompt(CompletionCreateParams.Prompt.ofString("This is a test."))
                 .bestOf(20L)
                 .echo(true)
@@ -326,7 +326,7 @@ class ErrorHandlingTest {
     fun completionsCreate429() {
         val params =
             CompletionCreateParams.builder()
-                .model(CompletionCreateParams.Model.ofString("string"))
+                .model(CompletionCreateParams.Model.GPT_3_5_TURBO_INSTRUCT)
                 .prompt(CompletionCreateParams.Prompt.ofString("This is a test."))
                 .bestOf(20L)
                 .echo(true)
@@ -363,7 +363,7 @@ class ErrorHandlingTest {
     fun completionsCreate500() {
         val params =
             CompletionCreateParams.builder()
-                .model(CompletionCreateParams.Model.ofString("string"))
+                .model(CompletionCreateParams.Model.GPT_3_5_TURBO_INSTRUCT)
                 .prompt(CompletionCreateParams.Prompt.ofString("This is a test."))
                 .bestOf(20L)
                 .echo(true)
@@ -404,7 +404,7 @@ class ErrorHandlingTest {
     fun unexpectedStatusCode() {
         val params =
             CompletionCreateParams.builder()
-                .model(CompletionCreateParams.Model.ofString("string"))
+                .model(CompletionCreateParams.Model.GPT_3_5_TURBO_INSTRUCT)
                 .prompt(CompletionCreateParams.Prompt.ofString("This is a test."))
                 .bestOf(20L)
                 .echo(true)
@@ -446,7 +446,7 @@ class ErrorHandlingTest {
     fun invalidBody() {
         val params =
             CompletionCreateParams.builder()
-                .model(CompletionCreateParams.Model.ofString("string"))
+                .model(CompletionCreateParams.Model.GPT_3_5_TURBO_INSTRUCT)
                 .prompt(CompletionCreateParams.Prompt.ofString("This is a test."))
                 .bestOf(20L)
                 .echo(true)
@@ -482,7 +482,7 @@ class ErrorHandlingTest {
     fun invalidErrorBody() {
         val params =
             CompletionCreateParams.builder()
-                .model(CompletionCreateParams.Model.ofString("string"))
+                .model(CompletionCreateParams.Model.GPT_3_5_TURBO_INSTRUCT)
                 .prompt(CompletionCreateParams.Prompt.ofString("This is a test."))
                 .bestOf(20L)
                 .echo(true)

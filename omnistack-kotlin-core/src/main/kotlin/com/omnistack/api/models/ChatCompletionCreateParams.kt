@@ -876,16 +876,7 @@ constructor(
          * [model endpoint compatibility](/docs/models/model-endpoint-compatibility) table for
          * details on which models work with the Chat API.
          */
-        fun model(string: String) = apply { this.model = Model.ofString(string) }
-
-        /**
-         * ID of the model to use. See the
-         * [model endpoint compatibility](/docs/models/model-endpoint-compatibility) table for
-         * details on which models work with the Chat API.
-         */
-        fun model(unionMember1: Model.UnionMember1) = apply {
-            this.model = Model.ofUnionMember1(unionMember1)
-        }
+        fun model(value: String) = apply { this.model = Model.of(value) }
 
         /**
          * Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing
@@ -5399,337 +5390,223 @@ constructor(
         }
     }
 
-    @JsonDeserialize(using = Model.Deserializer::class)
-    @JsonSerialize(using = Model.Serializer::class)
     class Model
+    @JsonCreator
     private constructor(
-        private val string: String? = null,
-        private val unionMember1: UnionMember1? = null,
-        private val _json: JsonValue? = null,
-    ) {
+        private val value: JsonField<String>,
+    ) : Enum {
 
-        private var validated: Boolean = false
-
-        fun string(): String? = string
-
-        fun unionMember1(): UnionMember1? = unionMember1
-
-        fun isString(): Boolean = string != null
-
-        fun isUnionMember1(): Boolean = unionMember1 != null
-
-        fun asString(): String = string.getOrThrow("string")
-
-        fun asUnionMember1(): UnionMember1 = unionMember1.getOrThrow("unionMember1")
-
-        fun _json(): JsonValue? = _json
-
-        fun <T> accept(visitor: Visitor<T>): T {
-            return when {
-                string != null -> visitor.visitString(string)
-                unionMember1 != null -> visitor.visitUnionMember1(unionMember1)
-                else -> visitor.unknown(_json)
-            }
-        }
-
-        fun validate(): Model = apply {
-            if (!validated) {
-                if (string == null && unionMember1 == null) {
-                    throw OmnistackInvalidDataException("Unknown Model: $_json")
-                }
-                validated = true
-            }
-        }
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
                 return true
             }
 
-            return /* spotless:off */ other is Model && this.string == other.string && this.unionMember1 == other.unionMember1 /* spotless:on */
+            return /* spotless:off */ other is Model && this.value == other.value /* spotless:on */
         }
 
-        override fun hashCode(): Int {
-            return /* spotless:off */ Objects.hash(string, unionMember1) /* spotless:on */
-        }
+        override fun hashCode() = value.hashCode()
 
-        override fun toString(): String {
-            return when {
-                string != null -> "Model{string=$string}"
-                unionMember1 != null -> "Model{unionMember1=$unionMember1}"
-                _json != null -> "Model{_unknown=$_json}"
-                else -> throw IllegalStateException("Invalid Model")
-            }
-        }
+        override fun toString() = value.toString()
 
         companion object {
 
-            fun ofString(string: String) = Model(string = string)
+            val O1_PREVIEW = Model(JsonField.of("o1-preview"))
 
-            fun ofUnionMember1(unionMember1: UnionMember1) = Model(unionMember1 = unionMember1)
+            val O1_PREVIEW_2024_09_12 = Model(JsonField.of("o1-preview-2024-09-12"))
+
+            val O1_MINI = Model(JsonField.of("o1-mini"))
+
+            val O1_MINI_2024_09_12 = Model(JsonField.of("o1-mini-2024-09-12"))
+
+            val GPT_4O = Model(JsonField.of("gpt-4o"))
+
+            val GPT_4O_2024_08_06 = Model(JsonField.of("gpt-4o-2024-08-06"))
+
+            val GPT_4O_2024_05_13 = Model(JsonField.of("gpt-4o-2024-05-13"))
+
+            val CHATGPT_4O_LATEST = Model(JsonField.of("chatgpt-4o-latest"))
+
+            val GPT_4O_MINI = Model(JsonField.of("gpt-4o-mini"))
+
+            val GPT_4O_MINI_2024_07_18 = Model(JsonField.of("gpt-4o-mini-2024-07-18"))
+
+            val GPT_4_TURBO = Model(JsonField.of("gpt-4-turbo"))
+
+            val GPT_4_TURBO_2024_04_09 = Model(JsonField.of("gpt-4-turbo-2024-04-09"))
+
+            val GPT_4_0125_PREVIEW = Model(JsonField.of("gpt-4-0125-preview"))
+
+            val GPT_4_TURBO_PREVIEW = Model(JsonField.of("gpt-4-turbo-preview"))
+
+            val GPT_4_1106_PREVIEW = Model(JsonField.of("gpt-4-1106-preview"))
+
+            val GPT_4_VISION_PREVIEW = Model(JsonField.of("gpt-4-vision-preview"))
+
+            val GPT_4 = Model(JsonField.of("gpt-4"))
+
+            val GPT_4_0314 = Model(JsonField.of("gpt-4-0314"))
+
+            val GPT_4_0613 = Model(JsonField.of("gpt-4-0613"))
+
+            val GPT_4_32K = Model(JsonField.of("gpt-4-32k"))
+
+            val GPT_4_32K_0314 = Model(JsonField.of("gpt-4-32k-0314"))
+
+            val GPT_4_32K_0613 = Model(JsonField.of("gpt-4-32k-0613"))
+
+            val GPT_3_5_TURBO = Model(JsonField.of("gpt-3.5-turbo"))
+
+            val GPT_3_5_TURBO_16K = Model(JsonField.of("gpt-3.5-turbo-16k"))
+
+            val GPT_3_5_TURBO_0301 = Model(JsonField.of("gpt-3.5-turbo-0301"))
+
+            val GPT_3_5_TURBO_0613 = Model(JsonField.of("gpt-3.5-turbo-0613"))
+
+            val GPT_3_5_TURBO_1106 = Model(JsonField.of("gpt-3.5-turbo-1106"))
+
+            val GPT_3_5_TURBO_0125 = Model(JsonField.of("gpt-3.5-turbo-0125"))
+
+            val GPT_3_5_TURBO_16K_0613 = Model(JsonField.of("gpt-3.5-turbo-16k-0613"))
+
+            fun of(value: String) = Model(JsonField.of(value))
         }
 
-        interface Visitor<out T> {
-
-            fun visitString(string: String): T
-
-            fun visitUnionMember1(unionMember1: UnionMember1): T
-
-            fun unknown(json: JsonValue?): T {
-                throw OmnistackInvalidDataException("Unknown Model: $json")
-            }
+        enum class Known {
+            O1_PREVIEW,
+            O1_PREVIEW_2024_09_12,
+            O1_MINI,
+            O1_MINI_2024_09_12,
+            GPT_4O,
+            GPT_4O_2024_08_06,
+            GPT_4O_2024_05_13,
+            CHATGPT_4O_LATEST,
+            GPT_4O_MINI,
+            GPT_4O_MINI_2024_07_18,
+            GPT_4_TURBO,
+            GPT_4_TURBO_2024_04_09,
+            GPT_4_0125_PREVIEW,
+            GPT_4_TURBO_PREVIEW,
+            GPT_4_1106_PREVIEW,
+            GPT_4_VISION_PREVIEW,
+            GPT_4,
+            GPT_4_0314,
+            GPT_4_0613,
+            GPT_4_32K,
+            GPT_4_32K_0314,
+            GPT_4_32K_0613,
+            GPT_3_5_TURBO,
+            GPT_3_5_TURBO_16K,
+            GPT_3_5_TURBO_0301,
+            GPT_3_5_TURBO_0613,
+            GPT_3_5_TURBO_1106,
+            GPT_3_5_TURBO_0125,
+            GPT_3_5_TURBO_16K_0613,
         }
 
-        class Deserializer : BaseDeserializer<Model>(Model::class) {
-
-            override fun ObjectCodec.deserialize(node: JsonNode): Model {
-                val json = JsonValue.fromJsonNode(node)
-
-                tryDeserialize(node, jacksonTypeRef<String>())?.let {
-                    return Model(string = it, _json = json)
-                }
-                tryDeserialize(node, jacksonTypeRef<UnionMember1>())?.let {
-                    return Model(unionMember1 = it, _json = json)
-                }
-
-                return Model(_json = json)
-            }
+        enum class Value {
+            O1_PREVIEW,
+            O1_PREVIEW_2024_09_12,
+            O1_MINI,
+            O1_MINI_2024_09_12,
+            GPT_4O,
+            GPT_4O_2024_08_06,
+            GPT_4O_2024_05_13,
+            CHATGPT_4O_LATEST,
+            GPT_4O_MINI,
+            GPT_4O_MINI_2024_07_18,
+            GPT_4_TURBO,
+            GPT_4_TURBO_2024_04_09,
+            GPT_4_0125_PREVIEW,
+            GPT_4_TURBO_PREVIEW,
+            GPT_4_1106_PREVIEW,
+            GPT_4_VISION_PREVIEW,
+            GPT_4,
+            GPT_4_0314,
+            GPT_4_0613,
+            GPT_4_32K,
+            GPT_4_32K_0314,
+            GPT_4_32K_0613,
+            GPT_3_5_TURBO,
+            GPT_3_5_TURBO_16K,
+            GPT_3_5_TURBO_0301,
+            GPT_3_5_TURBO_0613,
+            GPT_3_5_TURBO_1106,
+            GPT_3_5_TURBO_0125,
+            GPT_3_5_TURBO_16K_0613,
+            _UNKNOWN,
         }
 
-        class Serializer : BaseSerializer<Model>(Model::class) {
-
-            override fun serialize(
-                value: Model,
-                generator: JsonGenerator,
-                provider: SerializerProvider
-            ) {
-                when {
-                    value.string != null -> generator.writeObject(value.string)
-                    value.unionMember1 != null -> generator.writeObject(value.unionMember1)
-                    value._json != null -> generator.writeObject(value._json)
-                    else -> throw IllegalStateException("Invalid Model")
-                }
-            }
-        }
-
-        class UnionMember1
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
-
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return /* spotless:off */ other is UnionMember1 && this.value == other.value /* spotless:on */
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-
-            companion object {
-
-                val O1_PREVIEW = UnionMember1(JsonField.of("o1-preview"))
-
-                val O1_PREVIEW_2024_09_12 = UnionMember1(JsonField.of("o1-preview-2024-09-12"))
-
-                val O1_MINI = UnionMember1(JsonField.of("o1-mini"))
-
-                val O1_MINI_2024_09_12 = UnionMember1(JsonField.of("o1-mini-2024-09-12"))
-
-                val GPT_4O = UnionMember1(JsonField.of("gpt-4o"))
-
-                val GPT_4O_2024_08_06 = UnionMember1(JsonField.of("gpt-4o-2024-08-06"))
-
-                val GPT_4O_2024_05_13 = UnionMember1(JsonField.of("gpt-4o-2024-05-13"))
-
-                val CHATGPT_4O_LATEST = UnionMember1(JsonField.of("chatgpt-4o-latest"))
-
-                val GPT_4O_MINI = UnionMember1(JsonField.of("gpt-4o-mini"))
-
-                val GPT_4O_MINI_2024_07_18 = UnionMember1(JsonField.of("gpt-4o-mini-2024-07-18"))
-
-                val GPT_4_TURBO = UnionMember1(JsonField.of("gpt-4-turbo"))
-
-                val GPT_4_TURBO_2024_04_09 = UnionMember1(JsonField.of("gpt-4-turbo-2024-04-09"))
-
-                val GPT_4_0125_PREVIEW = UnionMember1(JsonField.of("gpt-4-0125-preview"))
-
-                val GPT_4_TURBO_PREVIEW = UnionMember1(JsonField.of("gpt-4-turbo-preview"))
-
-                val GPT_4_1106_PREVIEW = UnionMember1(JsonField.of("gpt-4-1106-preview"))
-
-                val GPT_4_VISION_PREVIEW = UnionMember1(JsonField.of("gpt-4-vision-preview"))
-
-                val GPT_4 = UnionMember1(JsonField.of("gpt-4"))
-
-                val GPT_4_0314 = UnionMember1(JsonField.of("gpt-4-0314"))
-
-                val GPT_4_0613 = UnionMember1(JsonField.of("gpt-4-0613"))
-
-                val GPT_4_32K = UnionMember1(JsonField.of("gpt-4-32k"))
-
-                val GPT_4_32K_0314 = UnionMember1(JsonField.of("gpt-4-32k-0314"))
-
-                val GPT_4_32K_0613 = UnionMember1(JsonField.of("gpt-4-32k-0613"))
-
-                val GPT_3_5_TURBO = UnionMember1(JsonField.of("gpt-3.5-turbo"))
-
-                val GPT_3_5_TURBO_16K = UnionMember1(JsonField.of("gpt-3.5-turbo-16k"))
-
-                val GPT_3_5_TURBO_0301 = UnionMember1(JsonField.of("gpt-3.5-turbo-0301"))
-
-                val GPT_3_5_TURBO_0613 = UnionMember1(JsonField.of("gpt-3.5-turbo-0613"))
-
-                val GPT_3_5_TURBO_1106 = UnionMember1(JsonField.of("gpt-3.5-turbo-1106"))
-
-                val GPT_3_5_TURBO_0125 = UnionMember1(JsonField.of("gpt-3.5-turbo-0125"))
-
-                val GPT_3_5_TURBO_16K_0613 = UnionMember1(JsonField.of("gpt-3.5-turbo-16k-0613"))
-
-                fun of(value: String) = UnionMember1(JsonField.of(value))
+        fun value(): Value =
+            when (this) {
+                O1_PREVIEW -> Value.O1_PREVIEW
+                O1_PREVIEW_2024_09_12 -> Value.O1_PREVIEW_2024_09_12
+                O1_MINI -> Value.O1_MINI
+                O1_MINI_2024_09_12 -> Value.O1_MINI_2024_09_12
+                GPT_4O -> Value.GPT_4O
+                GPT_4O_2024_08_06 -> Value.GPT_4O_2024_08_06
+                GPT_4O_2024_05_13 -> Value.GPT_4O_2024_05_13
+                CHATGPT_4O_LATEST -> Value.CHATGPT_4O_LATEST
+                GPT_4O_MINI -> Value.GPT_4O_MINI
+                GPT_4O_MINI_2024_07_18 -> Value.GPT_4O_MINI_2024_07_18
+                GPT_4_TURBO -> Value.GPT_4_TURBO
+                GPT_4_TURBO_2024_04_09 -> Value.GPT_4_TURBO_2024_04_09
+                GPT_4_0125_PREVIEW -> Value.GPT_4_0125_PREVIEW
+                GPT_4_TURBO_PREVIEW -> Value.GPT_4_TURBO_PREVIEW
+                GPT_4_1106_PREVIEW -> Value.GPT_4_1106_PREVIEW
+                GPT_4_VISION_PREVIEW -> Value.GPT_4_VISION_PREVIEW
+                GPT_4 -> Value.GPT_4
+                GPT_4_0314 -> Value.GPT_4_0314
+                GPT_4_0613 -> Value.GPT_4_0613
+                GPT_4_32K -> Value.GPT_4_32K
+                GPT_4_32K_0314 -> Value.GPT_4_32K_0314
+                GPT_4_32K_0613 -> Value.GPT_4_32K_0613
+                GPT_3_5_TURBO -> Value.GPT_3_5_TURBO
+                GPT_3_5_TURBO_16K -> Value.GPT_3_5_TURBO_16K
+                GPT_3_5_TURBO_0301 -> Value.GPT_3_5_TURBO_0301
+                GPT_3_5_TURBO_0613 -> Value.GPT_3_5_TURBO_0613
+                GPT_3_5_TURBO_1106 -> Value.GPT_3_5_TURBO_1106
+                GPT_3_5_TURBO_0125 -> Value.GPT_3_5_TURBO_0125
+                GPT_3_5_TURBO_16K_0613 -> Value.GPT_3_5_TURBO_16K_0613
+                else -> Value._UNKNOWN
             }
 
-            enum class Known {
-                O1_PREVIEW,
-                O1_PREVIEW_2024_09_12,
-                O1_MINI,
-                O1_MINI_2024_09_12,
-                GPT_4O,
-                GPT_4O_2024_08_06,
-                GPT_4O_2024_05_13,
-                CHATGPT_4O_LATEST,
-                GPT_4O_MINI,
-                GPT_4O_MINI_2024_07_18,
-                GPT_4_TURBO,
-                GPT_4_TURBO_2024_04_09,
-                GPT_4_0125_PREVIEW,
-                GPT_4_TURBO_PREVIEW,
-                GPT_4_1106_PREVIEW,
-                GPT_4_VISION_PREVIEW,
-                GPT_4,
-                GPT_4_0314,
-                GPT_4_0613,
-                GPT_4_32K,
-                GPT_4_32K_0314,
-                GPT_4_32K_0613,
-                GPT_3_5_TURBO,
-                GPT_3_5_TURBO_16K,
-                GPT_3_5_TURBO_0301,
-                GPT_3_5_TURBO_0613,
-                GPT_3_5_TURBO_1106,
-                GPT_3_5_TURBO_0125,
-                GPT_3_5_TURBO_16K_0613,
+        fun known(): Known =
+            when (this) {
+                O1_PREVIEW -> Known.O1_PREVIEW
+                O1_PREVIEW_2024_09_12 -> Known.O1_PREVIEW_2024_09_12
+                O1_MINI -> Known.O1_MINI
+                O1_MINI_2024_09_12 -> Known.O1_MINI_2024_09_12
+                GPT_4O -> Known.GPT_4O
+                GPT_4O_2024_08_06 -> Known.GPT_4O_2024_08_06
+                GPT_4O_2024_05_13 -> Known.GPT_4O_2024_05_13
+                CHATGPT_4O_LATEST -> Known.CHATGPT_4O_LATEST
+                GPT_4O_MINI -> Known.GPT_4O_MINI
+                GPT_4O_MINI_2024_07_18 -> Known.GPT_4O_MINI_2024_07_18
+                GPT_4_TURBO -> Known.GPT_4_TURBO
+                GPT_4_TURBO_2024_04_09 -> Known.GPT_4_TURBO_2024_04_09
+                GPT_4_0125_PREVIEW -> Known.GPT_4_0125_PREVIEW
+                GPT_4_TURBO_PREVIEW -> Known.GPT_4_TURBO_PREVIEW
+                GPT_4_1106_PREVIEW -> Known.GPT_4_1106_PREVIEW
+                GPT_4_VISION_PREVIEW -> Known.GPT_4_VISION_PREVIEW
+                GPT_4 -> Known.GPT_4
+                GPT_4_0314 -> Known.GPT_4_0314
+                GPT_4_0613 -> Known.GPT_4_0613
+                GPT_4_32K -> Known.GPT_4_32K
+                GPT_4_32K_0314 -> Known.GPT_4_32K_0314
+                GPT_4_32K_0613 -> Known.GPT_4_32K_0613
+                GPT_3_5_TURBO -> Known.GPT_3_5_TURBO
+                GPT_3_5_TURBO_16K -> Known.GPT_3_5_TURBO_16K
+                GPT_3_5_TURBO_0301 -> Known.GPT_3_5_TURBO_0301
+                GPT_3_5_TURBO_0613 -> Known.GPT_3_5_TURBO_0613
+                GPT_3_5_TURBO_1106 -> Known.GPT_3_5_TURBO_1106
+                GPT_3_5_TURBO_0125 -> Known.GPT_3_5_TURBO_0125
+                GPT_3_5_TURBO_16K_0613 -> Known.GPT_3_5_TURBO_16K_0613
+                else -> throw OmnistackInvalidDataException("Unknown Model: $value")
             }
 
-            enum class Value {
-                O1_PREVIEW,
-                O1_PREVIEW_2024_09_12,
-                O1_MINI,
-                O1_MINI_2024_09_12,
-                GPT_4O,
-                GPT_4O_2024_08_06,
-                GPT_4O_2024_05_13,
-                CHATGPT_4O_LATEST,
-                GPT_4O_MINI,
-                GPT_4O_MINI_2024_07_18,
-                GPT_4_TURBO,
-                GPT_4_TURBO_2024_04_09,
-                GPT_4_0125_PREVIEW,
-                GPT_4_TURBO_PREVIEW,
-                GPT_4_1106_PREVIEW,
-                GPT_4_VISION_PREVIEW,
-                GPT_4,
-                GPT_4_0314,
-                GPT_4_0613,
-                GPT_4_32K,
-                GPT_4_32K_0314,
-                GPT_4_32K_0613,
-                GPT_3_5_TURBO,
-                GPT_3_5_TURBO_16K,
-                GPT_3_5_TURBO_0301,
-                GPT_3_5_TURBO_0613,
-                GPT_3_5_TURBO_1106,
-                GPT_3_5_TURBO_0125,
-                GPT_3_5_TURBO_16K_0613,
-                _UNKNOWN,
-            }
-
-            fun value(): Value =
-                when (this) {
-                    O1_PREVIEW -> Value.O1_PREVIEW
-                    O1_PREVIEW_2024_09_12 -> Value.O1_PREVIEW_2024_09_12
-                    O1_MINI -> Value.O1_MINI
-                    O1_MINI_2024_09_12 -> Value.O1_MINI_2024_09_12
-                    GPT_4O -> Value.GPT_4O
-                    GPT_4O_2024_08_06 -> Value.GPT_4O_2024_08_06
-                    GPT_4O_2024_05_13 -> Value.GPT_4O_2024_05_13
-                    CHATGPT_4O_LATEST -> Value.CHATGPT_4O_LATEST
-                    GPT_4O_MINI -> Value.GPT_4O_MINI
-                    GPT_4O_MINI_2024_07_18 -> Value.GPT_4O_MINI_2024_07_18
-                    GPT_4_TURBO -> Value.GPT_4_TURBO
-                    GPT_4_TURBO_2024_04_09 -> Value.GPT_4_TURBO_2024_04_09
-                    GPT_4_0125_PREVIEW -> Value.GPT_4_0125_PREVIEW
-                    GPT_4_TURBO_PREVIEW -> Value.GPT_4_TURBO_PREVIEW
-                    GPT_4_1106_PREVIEW -> Value.GPT_4_1106_PREVIEW
-                    GPT_4_VISION_PREVIEW -> Value.GPT_4_VISION_PREVIEW
-                    GPT_4 -> Value.GPT_4
-                    GPT_4_0314 -> Value.GPT_4_0314
-                    GPT_4_0613 -> Value.GPT_4_0613
-                    GPT_4_32K -> Value.GPT_4_32K
-                    GPT_4_32K_0314 -> Value.GPT_4_32K_0314
-                    GPT_4_32K_0613 -> Value.GPT_4_32K_0613
-                    GPT_3_5_TURBO -> Value.GPT_3_5_TURBO
-                    GPT_3_5_TURBO_16K -> Value.GPT_3_5_TURBO_16K
-                    GPT_3_5_TURBO_0301 -> Value.GPT_3_5_TURBO_0301
-                    GPT_3_5_TURBO_0613 -> Value.GPT_3_5_TURBO_0613
-                    GPT_3_5_TURBO_1106 -> Value.GPT_3_5_TURBO_1106
-                    GPT_3_5_TURBO_0125 -> Value.GPT_3_5_TURBO_0125
-                    GPT_3_5_TURBO_16K_0613 -> Value.GPT_3_5_TURBO_16K_0613
-                    else -> Value._UNKNOWN
-                }
-
-            fun known(): Known =
-                when (this) {
-                    O1_PREVIEW -> Known.O1_PREVIEW
-                    O1_PREVIEW_2024_09_12 -> Known.O1_PREVIEW_2024_09_12
-                    O1_MINI -> Known.O1_MINI
-                    O1_MINI_2024_09_12 -> Known.O1_MINI_2024_09_12
-                    GPT_4O -> Known.GPT_4O
-                    GPT_4O_2024_08_06 -> Known.GPT_4O_2024_08_06
-                    GPT_4O_2024_05_13 -> Known.GPT_4O_2024_05_13
-                    CHATGPT_4O_LATEST -> Known.CHATGPT_4O_LATEST
-                    GPT_4O_MINI -> Known.GPT_4O_MINI
-                    GPT_4O_MINI_2024_07_18 -> Known.GPT_4O_MINI_2024_07_18
-                    GPT_4_TURBO -> Known.GPT_4_TURBO
-                    GPT_4_TURBO_2024_04_09 -> Known.GPT_4_TURBO_2024_04_09
-                    GPT_4_0125_PREVIEW -> Known.GPT_4_0125_PREVIEW
-                    GPT_4_TURBO_PREVIEW -> Known.GPT_4_TURBO_PREVIEW
-                    GPT_4_1106_PREVIEW -> Known.GPT_4_1106_PREVIEW
-                    GPT_4_VISION_PREVIEW -> Known.GPT_4_VISION_PREVIEW
-                    GPT_4 -> Known.GPT_4
-                    GPT_4_0314 -> Known.GPT_4_0314
-                    GPT_4_0613 -> Known.GPT_4_0613
-                    GPT_4_32K -> Known.GPT_4_32K
-                    GPT_4_32K_0314 -> Known.GPT_4_32K_0314
-                    GPT_4_32K_0613 -> Known.GPT_4_32K_0613
-                    GPT_3_5_TURBO -> Known.GPT_3_5_TURBO
-                    GPT_3_5_TURBO_16K -> Known.GPT_3_5_TURBO_16K
-                    GPT_3_5_TURBO_0301 -> Known.GPT_3_5_TURBO_0301
-                    GPT_3_5_TURBO_0613 -> Known.GPT_3_5_TURBO_0613
-                    GPT_3_5_TURBO_1106 -> Known.GPT_3_5_TURBO_1106
-                    GPT_3_5_TURBO_0125 -> Known.GPT_3_5_TURBO_0125
-                    GPT_3_5_TURBO_16K_0613 -> Known.GPT_3_5_TURBO_16K_0613
-                    else -> throw OmnistackInvalidDataException("Unknown UnionMember1: $value")
-                }
-
-            fun asString(): String = _value().asStringOrThrow()
-        }
+        fun asString(): String = _value().asStringOrThrow()
     }
 
     @JsonDeserialize(using = FunctionCall.Deserializer::class)
