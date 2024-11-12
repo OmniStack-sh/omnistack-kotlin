@@ -22,7 +22,9 @@ import com.omnistack.api.core.JsonMissing
 import com.omnistack.api.core.JsonValue
 import com.omnistack.api.core.NoAutoDetect
 import com.omnistack.api.core.getOrThrow
-import com.omnistack.api.core.toUnmodifiable
+import com.omnistack.api.core.http.Headers
+import com.omnistack.api.core.http.QueryParams
+import com.omnistack.api.core.toImmutable
 import com.omnistack.api.errors.OmnistackInvalidDataException
 import com.omnistack.api.models.*
 import java.util.Objects
@@ -53,8 +55,8 @@ constructor(
     private val topLogprobs: Long?,
     private val topP: Double?,
     private val user: String?,
-    private val additionalQueryParams: Map<String, List<String>>,
-    private val additionalHeaders: Map<String, List<String>>,
+    private val additionalHeaders: Headers,
+    private val additionalQueryParams: QueryParams,
     private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
@@ -136,9 +138,9 @@ constructor(
         )
     }
 
-    internal fun getQueryParams(): Map<String, List<String>> = additionalQueryParams
+    internal fun getHeaders(): Headers = additionalHeaders
 
-    internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
+    internal fun getQueryParams(): QueryParams = additionalQueryParams
 
     @JsonDeserialize(builder = ChatCompletionCreateBody.Builder::class)
     @NoAutoDetect
@@ -709,11 +711,11 @@ constructor(
             fun build(): ChatCompletionCreateBody =
                 ChatCompletionCreateBody(
                     checkNotNull(messages) { "`messages` is required but was not set" }
-                        .toUnmodifiable(),
+                        .toImmutable(),
                     checkNotNull(model) { "`model` is required but was not set" },
                     frequencyPenalty,
                     functionCall,
-                    functions?.toUnmodifiable(),
+                    functions?.toImmutable(),
                     logitBias,
                     logprobs,
                     maxCompletionTokens,
@@ -729,11 +731,11 @@ constructor(
                     streamOptions,
                     temperature,
                     toolChoice,
-                    tools?.toUnmodifiable(),
+                    tools?.toImmutable(),
                     topLogprobs,
                     topP,
                     user,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -758,9 +760,9 @@ constructor(
             "ChatCompletionCreateBody{messages=$messages, model=$model, frequencyPenalty=$frequencyPenalty, functionCall=$functionCall, functions=$functions, logitBias=$logitBias, logprobs=$logprobs, maxCompletionTokens=$maxCompletionTokens, maxTokens=$maxTokens, n=$n, parallelToolCalls=$parallelToolCalls, presencePenalty=$presencePenalty, responseFormat=$responseFormat, seed=$seed, serviceTier=$serviceTier, stop=$stop, stream=$stream, streamOptions=$streamOptions, temperature=$temperature, toolChoice=$toolChoice, tools=$tools, topLogprobs=$topLogprobs, topP=$topP, user=$user, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalQueryParams(): Map<String, List<String>> = additionalQueryParams
+    fun _additionalHeaders(): Headers = additionalHeaders
 
-    fun _additionalHeaders(): Map<String, List<String>> = additionalHeaders
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
@@ -769,15 +771,15 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is ChatCompletionCreateParams && this.messages == other.messages && this.model == other.model && this.frequencyPenalty == other.frequencyPenalty && this.functionCall == other.functionCall && this.functions == other.functions && this.logitBias == other.logitBias && this.logprobs == other.logprobs && this.maxCompletionTokens == other.maxCompletionTokens && this.maxTokens == other.maxTokens && this.n == other.n && this.parallelToolCalls == other.parallelToolCalls && this.presencePenalty == other.presencePenalty && this.responseFormat == other.responseFormat && this.seed == other.seed && this.serviceTier == other.serviceTier && this.stop == other.stop && this.stream == other.stream && this.streamOptions == other.streamOptions && this.temperature == other.temperature && this.toolChoice == other.toolChoice && this.tools == other.tools && this.topLogprobs == other.topLogprobs && this.topP == other.topP && this.user == other.user && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is ChatCompletionCreateParams && this.messages == other.messages && this.model == other.model && this.frequencyPenalty == other.frequencyPenalty && this.functionCall == other.functionCall && this.functions == other.functions && this.logitBias == other.logitBias && this.logprobs == other.logprobs && this.maxCompletionTokens == other.maxCompletionTokens && this.maxTokens == other.maxTokens && this.n == other.n && this.parallelToolCalls == other.parallelToolCalls && this.presencePenalty == other.presencePenalty && this.responseFormat == other.responseFormat && this.seed == other.seed && this.serviceTier == other.serviceTier && this.stop == other.stop && this.stream == other.stream && this.streamOptions == other.streamOptions && this.temperature == other.temperature && this.toolChoice == other.toolChoice && this.tools == other.tools && this.topLogprobs == other.topLogprobs && this.topP == other.topP && this.user == other.user && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(messages, model, frequencyPenalty, functionCall, functions, logitBias, logprobs, maxCompletionTokens, maxTokens, n, parallelToolCalls, presencePenalty, responseFormat, seed, serviceTier, stop, stream, streamOptions, temperature, toolChoice, tools, topLogprobs, topP, user, additionalQueryParams, additionalHeaders, additionalBodyProperties) /* spotless:on */
+        return /* spotless:off */ Objects.hash(messages, model, frequencyPenalty, functionCall, functions, logitBias, logprobs, maxCompletionTokens, maxTokens, n, parallelToolCalls, presencePenalty, responseFormat, seed, serviceTier, stop, stream, streamOptions, temperature, toolChoice, tools, topLogprobs, topP, user, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
     }
 
     override fun toString() =
-        "ChatCompletionCreateParams{messages=$messages, model=$model, frequencyPenalty=$frequencyPenalty, functionCall=$functionCall, functions=$functions, logitBias=$logitBias, logprobs=$logprobs, maxCompletionTokens=$maxCompletionTokens, maxTokens=$maxTokens, n=$n, parallelToolCalls=$parallelToolCalls, presencePenalty=$presencePenalty, responseFormat=$responseFormat, seed=$seed, serviceTier=$serviceTier, stop=$stop, stream=$stream, streamOptions=$streamOptions, temperature=$temperature, toolChoice=$toolChoice, tools=$tools, topLogprobs=$topLogprobs, topP=$topP, user=$user, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
+        "ChatCompletionCreateParams{messages=$messages, model=$model, frequencyPenalty=$frequencyPenalty, functionCall=$functionCall, functions=$functions, logitBias=$logitBias, logprobs=$logprobs, maxCompletionTokens=$maxCompletionTokens, maxTokens=$maxTokens, n=$n, parallelToolCalls=$parallelToolCalls, presencePenalty=$presencePenalty, responseFormat=$responseFormat, seed=$seed, serviceTier=$serviceTier, stop=$stop, stream=$stream, streamOptions=$streamOptions, temperature=$temperature, toolChoice=$toolChoice, tools=$tools, topLogprobs=$topLogprobs, topP=$topP, user=$user, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -813,8 +815,8 @@ constructor(
         private var topLogprobs: Long? = null
         private var topP: Double? = null
         private var user: String? = null
-        private var additionalQueryParams: MutableMap<String, MutableList<String>> = mutableMapOf()
-        private var additionalHeaders: MutableMap<String, MutableList<String>> = mutableMapOf()
+        private var additionalHeaders: Headers.Builder = Headers.builder()
+        private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
         private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(chatCompletionCreateParams: ChatCompletionCreateParams) = apply {
@@ -842,8 +844,8 @@ constructor(
             this.topLogprobs = chatCompletionCreateParams.topLogprobs
             this.topP = chatCompletionCreateParams.topP
             this.user = chatCompletionCreateParams.user
-            additionalQueryParams(chatCompletionCreateParams.additionalQueryParams)
             additionalHeaders(chatCompletionCreateParams.additionalHeaders)
+            additionalQueryParams(chatCompletionCreateParams.additionalQueryParams)
             additionalBodyProperties(chatCompletionCreateParams.additionalBodyProperties)
         }
 
@@ -874,16 +876,7 @@ constructor(
          * [model endpoint compatibility](/docs/models/model-endpoint-compatibility) table for
          * details on which models work with the Chat API.
          */
-        fun model(string: String) = apply { this.model = Model.ofString(string) }
-
-        /**
-         * ID of the model to use. See the
-         * [model endpoint compatibility](/docs/models/model-endpoint-compatibility) table for
-         * details on which models work with the Chat API.
-         */
-        fun model(unionMember1: Model.UnionMember1) = apply {
-            this.model = Model.ofUnionMember1(unionMember1)
-        }
+        fun model(value: String) = apply { this.model = Model.of(value) }
 
         /**
          * Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing
@@ -1153,7 +1146,7 @@ constructor(
         fun stop(string: String) = apply { this.stop = Stop.ofString(string) }
 
         /** Up to 4 sequences where the API will stop generating further tokens. */
-        fun stop(strings: List<String>) = apply { this.stop = Stop.ofStrings(strings) }
+        fun stopOfStrings(strings: List<String>) = apply { this.stop = Stop.ofStrings(strings) }
 
         /**
          * If set, partial message deltas will be sent, like in ChatGPT. Tokens will be sent as
@@ -1259,53 +1252,111 @@ constructor(
          */
         fun user(user: String) = apply { this.user = user }
 
-        fun additionalQueryParams(additionalQueryParams: Map<String, List<String>>) = apply {
-            this.additionalQueryParams.clear()
-            putAllQueryParams(additionalQueryParams)
-        }
-
-        fun putQueryParam(name: String, value: String) = apply {
-            this.additionalQueryParams.getOrPut(name) { mutableListOf() }.add(value)
-        }
-
-        fun putQueryParams(name: String, values: Iterable<String>) = apply {
-            this.additionalQueryParams.getOrPut(name) { mutableListOf() }.addAll(values)
-        }
-
-        fun putAllQueryParams(additionalQueryParams: Map<String, Iterable<String>>) = apply {
-            additionalQueryParams.forEach(this::putQueryParams)
-        }
-
-        fun removeQueryParam(name: String) = apply {
-            this.additionalQueryParams.put(name, mutableListOf())
+        fun additionalHeaders(additionalHeaders: Headers) = apply {
+            this.additionalHeaders.clear()
+            putAllAdditionalHeaders(additionalHeaders)
         }
 
         fun additionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
             this.additionalHeaders.clear()
-            putAllHeaders(additionalHeaders)
+            putAllAdditionalHeaders(additionalHeaders)
         }
 
-        fun putHeader(name: String, value: String) = apply {
-            this.additionalHeaders.getOrPut(name) { mutableListOf() }.add(value)
+        fun putAdditionalHeader(name: String, value: String) = apply {
+            additionalHeaders.put(name, value)
         }
 
-        fun putHeaders(name: String, values: Iterable<String>) = apply {
-            this.additionalHeaders.getOrPut(name) { mutableListOf() }.addAll(values)
+        fun putAdditionalHeaders(name: String, values: Iterable<String>) = apply {
+            additionalHeaders.put(name, values)
         }
 
-        fun putAllHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
-            additionalHeaders.forEach(this::putHeaders)
+        fun putAllAdditionalHeaders(additionalHeaders: Headers) = apply {
+            this.additionalHeaders.putAll(additionalHeaders)
         }
 
-        fun removeHeader(name: String) = apply { this.additionalHeaders.put(name, mutableListOf()) }
+        fun putAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
+            this.additionalHeaders.putAll(additionalHeaders)
+        }
+
+        fun replaceAdditionalHeaders(name: String, value: String) = apply {
+            additionalHeaders.replace(name, value)
+        }
+
+        fun replaceAdditionalHeaders(name: String, values: Iterable<String>) = apply {
+            additionalHeaders.replace(name, values)
+        }
+
+        fun replaceAllAdditionalHeaders(additionalHeaders: Headers) = apply {
+            this.additionalHeaders.replaceAll(additionalHeaders)
+        }
+
+        fun replaceAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
+            this.additionalHeaders.replaceAll(additionalHeaders)
+        }
+
+        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
+
+        fun removeAllAdditionalHeaders(names: Set<String>) = apply {
+            additionalHeaders.removeAll(names)
+        }
+
+        fun additionalQueryParams(additionalQueryParams: QueryParams) = apply {
+            this.additionalQueryParams.clear()
+            putAllAdditionalQueryParams(additionalQueryParams)
+        }
+
+        fun additionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) = apply {
+            this.additionalQueryParams.clear()
+            putAllAdditionalQueryParams(additionalQueryParams)
+        }
+
+        fun putAdditionalQueryParam(key: String, value: String) = apply {
+            additionalQueryParams.put(key, value)
+        }
+
+        fun putAdditionalQueryParams(key: String, values: Iterable<String>) = apply {
+            additionalQueryParams.put(key, values)
+        }
+
+        fun putAllAdditionalQueryParams(additionalQueryParams: QueryParams) = apply {
+            this.additionalQueryParams.putAll(additionalQueryParams)
+        }
+
+        fun putAllAdditionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
+            apply {
+                this.additionalQueryParams.putAll(additionalQueryParams)
+            }
+
+        fun replaceAdditionalQueryParams(key: String, value: String) = apply {
+            additionalQueryParams.replace(key, value)
+        }
+
+        fun replaceAdditionalQueryParams(key: String, values: Iterable<String>) = apply {
+            additionalQueryParams.replace(key, values)
+        }
+
+        fun replaceAllAdditionalQueryParams(additionalQueryParams: QueryParams) = apply {
+            this.additionalQueryParams.replaceAll(additionalQueryParams)
+        }
+
+        fun replaceAllAdditionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
+            apply {
+                this.additionalQueryParams.replaceAll(additionalQueryParams)
+            }
+
+        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
+
+        fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
+            additionalQueryParams.removeAll(keys)
+        }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             this.additionalBodyProperties.clear()
-            this.additionalBodyProperties.putAll(additionalBodyProperties)
+            putAllAdditionalBodyProperties(additionalBodyProperties)
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            this.additionalBodyProperties.put(key, value)
+            additionalBodyProperties.put(key, value)
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
@@ -1313,14 +1364,21 @@ constructor(
                 this.additionalBodyProperties.putAll(additionalBodyProperties)
             }
 
+        fun removeAdditionalBodyProperty(key: String) = apply {
+            additionalBodyProperties.remove(key)
+        }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalBodyProperty)
+        }
+
         fun build(): ChatCompletionCreateParams =
             ChatCompletionCreateParams(
-                checkNotNull(messages) { "`messages` is required but was not set" }
-                    .toUnmodifiable(),
+                checkNotNull(messages) { "`messages` is required but was not set" }.toImmutable(),
                 checkNotNull(model) { "`model` is required but was not set" },
                 frequencyPenalty,
                 functionCall,
-                if (functions.size == 0) null else functions.toUnmodifiable(),
+                if (functions.size == 0) null else functions.toImmutable(),
                 logitBias,
                 logprobs,
                 maxCompletionTokens,
@@ -1336,13 +1394,13 @@ constructor(
                 streamOptions,
                 temperature,
                 toolChoice,
-                if (tools.size == 0) null else tools.toUnmodifiable(),
+                if (tools.size == 0) null else tools.toImmutable(),
                 topLogprobs,
                 topP,
                 user,
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalBodyProperties.toUnmodifiable(),
+                additionalHeaders.build(),
+                additionalQueryParams.build(),
+                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -1537,6 +1595,7 @@ constructor(
 
             override fun ObjectCodec.deserialize(node: JsonNode): Message {
                 val json = JsonValue.fromJsonNode(node)
+
                 tryDeserialize(node, jacksonTypeRef<ChatCompletionRequestSystemMessage>()) {
                         it.validate()
                     }
@@ -1718,7 +1777,7 @@ constructor(
                         content,
                         role,
                         name,
-                        additionalProperties.toUnmodifiable(),
+                        additionalProperties.toImmutable(),
                     )
             }
 
@@ -1726,8 +1785,8 @@ constructor(
             @JsonSerialize(using = Content.Serializer::class)
             class Content
             private constructor(
-                private val string: String? = null,
-                private val chatCompletionRequestMessageContentPartTexts:
+                private val textContent: String? = null,
+                private val arrayOfContentParts:
                     List<ChatCompletionRequestMessageContentPartText>? =
                     null,
                 private val _json: JsonValue? = null,
@@ -1736,49 +1795,40 @@ constructor(
                 private var validated: Boolean = false
 
                 /** The contents of the system message. */
-                fun string(): String? = string
+                fun textContent(): String? = textContent
                 /**
                  * An array of content parts with a defined type. For system messages, only type
                  * `text` is supported.
                  */
-                fun chatCompletionRequestMessageContentPartTexts():
-                    List<ChatCompletionRequestMessageContentPartText>? =
-                    chatCompletionRequestMessageContentPartTexts
+                fun arrayOfContentParts(): List<ChatCompletionRequestMessageContentPartText>? =
+                    arrayOfContentParts
 
-                fun isString(): Boolean = string != null
+                fun isTextContent(): Boolean = textContent != null
 
-                fun isChatCompletionRequestMessageContentPartTexts(): Boolean =
-                    chatCompletionRequestMessageContentPartTexts != null
+                fun isArrayOfContentParts(): Boolean = arrayOfContentParts != null
 
-                fun asString(): String = string.getOrThrow("string")
+                fun asTextContent(): String = textContent.getOrThrow("textContent")
 
-                fun asChatCompletionRequestMessageContentPartTexts():
-                    List<ChatCompletionRequestMessageContentPartText> =
-                    chatCompletionRequestMessageContentPartTexts.getOrThrow(
-                        "chatCompletionRequestMessageContentPartTexts"
-                    )
+                fun asArrayOfContentParts(): List<ChatCompletionRequestMessageContentPartText> =
+                    arrayOfContentParts.getOrThrow("arrayOfContentParts")
 
                 fun _json(): JsonValue? = _json
 
                 fun <T> accept(visitor: Visitor<T>): T {
                     return when {
-                        string != null -> visitor.visitString(string)
-                        chatCompletionRequestMessageContentPartTexts != null ->
-                            visitor.visitChatCompletionRequestMessageContentPartTexts(
-                                chatCompletionRequestMessageContentPartTexts
-                            )
+                        textContent != null -> visitor.visitTextContent(textContent)
+                        arrayOfContentParts != null ->
+                            visitor.visitArrayOfContentParts(arrayOfContentParts)
                         else -> visitor.unknown(_json)
                     }
                 }
 
                 fun validate(): Content = apply {
                     if (!validated) {
-                        if (
-                            string == null && chatCompletionRequestMessageContentPartTexts == null
-                        ) {
+                        if (textContent == null && arrayOfContentParts == null) {
                             throw OmnistackInvalidDataException("Unknown Content: $_json")
                         }
-                        chatCompletionRequestMessageContentPartTexts?.forEach { it.validate() }
+                        arrayOfContentParts?.forEach { it.validate() }
                         validated = true
                     }
                 }
@@ -1788,18 +1838,18 @@ constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is Content && this.string == other.string && this.chatCompletionRequestMessageContentPartTexts == other.chatCompletionRequestMessageContentPartTexts /* spotless:on */
+                    return /* spotless:off */ other is Content && this.textContent == other.textContent && this.arrayOfContentParts == other.arrayOfContentParts /* spotless:on */
                 }
 
                 override fun hashCode(): Int {
-                    return /* spotless:off */ Objects.hash(string, chatCompletionRequestMessageContentPartTexts) /* spotless:on */
+                    return /* spotless:off */ Objects.hash(textContent, arrayOfContentParts) /* spotless:on */
                 }
 
                 override fun toString(): String {
                     return when {
-                        string != null -> "Content{string=$string}"
-                        chatCompletionRequestMessageContentPartTexts != null ->
-                            "Content{chatCompletionRequestMessageContentPartTexts=$chatCompletionRequestMessageContentPartTexts}"
+                        textContent != null -> "Content{textContent=$textContent}"
+                        arrayOfContentParts != null ->
+                            "Content{arrayOfContentParts=$arrayOfContentParts}"
                         _json != null -> "Content{_unknown=$_json}"
                         else -> throw IllegalStateException("Invalid Content")
                     }
@@ -1807,25 +1857,19 @@ constructor(
 
                 companion object {
 
-                    fun ofString(string: String) = Content(string = string)
+                    fun ofTextContent(textContent: String) = Content(textContent = textContent)
 
-                    fun ofChatCompletionRequestMessageContentPartTexts(
-                        chatCompletionRequestMessageContentPartTexts:
-                            List<ChatCompletionRequestMessageContentPartText>
-                    ) =
-                        Content(
-                            chatCompletionRequestMessageContentPartTexts =
-                                chatCompletionRequestMessageContentPartTexts
-                        )
+                    fun ofArrayOfContentParts(
+                        arrayOfContentParts: List<ChatCompletionRequestMessageContentPartText>
+                    ) = Content(arrayOfContentParts = arrayOfContentParts)
                 }
 
                 interface Visitor<out T> {
 
-                    fun visitString(string: String): T
+                    fun visitTextContent(textContent: String): T
 
-                    fun visitChatCompletionRequestMessageContentPartTexts(
-                        chatCompletionRequestMessageContentPartTexts:
-                            List<ChatCompletionRequestMessageContentPartText>
+                    fun visitArrayOfContentParts(
+                        arrayOfContentParts: List<ChatCompletionRequestMessageContentPartText>
                     ): T
 
                     fun unknown(json: JsonValue?): T {
@@ -1837,8 +1881,9 @@ constructor(
 
                     override fun ObjectCodec.deserialize(node: JsonNode): Content {
                         val json = JsonValue.fromJsonNode(node)
+
                         tryDeserialize(node, jacksonTypeRef<String>())?.let {
-                            return Content(string = it, _json = json)
+                            return Content(textContent = it, _json = json)
                         }
                         tryDeserialize(
                                 node,
@@ -1847,10 +1892,7 @@ constructor(
                                 it.forEach { it.validate() }
                             }
                             ?.let {
-                                return Content(
-                                    chatCompletionRequestMessageContentPartTexts = it,
-                                    _json = json
-                                )
+                                return Content(arrayOfContentParts = it, _json = json)
                             }
 
                         return Content(_json = json)
@@ -1865,11 +1907,9 @@ constructor(
                         provider: SerializerProvider
                     ) {
                         when {
-                            value.string != null -> generator.writeObject(value.string)
-                            value.chatCompletionRequestMessageContentPartTexts != null ->
-                                generator.writeObject(
-                                    value.chatCompletionRequestMessageContentPartTexts
-                                )
+                            value.textContent != null -> generator.writeObject(value.textContent)
+                            value.arrayOfContentParts != null ->
+                                generator.writeObject(value.arrayOfContentParts)
                             value._json != null -> generator.writeObject(value._json)
                             else -> throw IllegalStateException("Invalid Content")
                         }
@@ -1973,7 +2013,7 @@ constructor(
                             ChatCompletionRequestMessageContentPartText(
                                 type,
                                 text,
-                                additionalProperties.toUnmodifiable(),
+                                additionalProperties.toImmutable(),
                             )
                     }
 
@@ -2245,7 +2285,7 @@ constructor(
                         content,
                         role,
                         name,
-                        additionalProperties.toUnmodifiable(),
+                        additionalProperties.toImmutable(),
                     )
             }
 
@@ -2253,8 +2293,8 @@ constructor(
             @JsonSerialize(using = Content.Serializer::class)
             class Content
             private constructor(
-                private val string: String? = null,
-                private val chatCompletionRequestUserMessageContentParts:
+                private val textContent: String? = null,
+                private val arrayOfContentParts:
                     List<ChatCompletionRequestUserMessageContentPart>? =
                     null,
                 private val _json: JsonValue? = null,
@@ -2263,48 +2303,39 @@ constructor(
                 private var validated: Boolean = false
 
                 /** The text contents of the message. */
-                fun string(): String? = string
+                fun textContent(): String? = textContent
                 /**
                  * An array of content parts with a defined type, each can be of type `text` or
                  * `image_url` when passing in images. You can pass multiple images by adding
                  * multiple `image_url` content parts. Image input is only supported when using the
                  * `gpt-4o` model.
                  */
-                fun chatCompletionRequestUserMessageContentParts():
-                    List<ChatCompletionRequestUserMessageContentPart>? =
-                    chatCompletionRequestUserMessageContentParts
+                fun arrayOfContentParts(): List<ChatCompletionRequestUserMessageContentPart>? =
+                    arrayOfContentParts
 
-                fun isString(): Boolean = string != null
+                fun isTextContent(): Boolean = textContent != null
 
-                fun isChatCompletionRequestUserMessageContentParts(): Boolean =
-                    chatCompletionRequestUserMessageContentParts != null
+                fun isArrayOfContentParts(): Boolean = arrayOfContentParts != null
 
-                fun asString(): String = string.getOrThrow("string")
+                fun asTextContent(): String = textContent.getOrThrow("textContent")
 
-                fun asChatCompletionRequestUserMessageContentParts():
-                    List<ChatCompletionRequestUserMessageContentPart> =
-                    chatCompletionRequestUserMessageContentParts.getOrThrow(
-                        "chatCompletionRequestUserMessageContentParts"
-                    )
+                fun asArrayOfContentParts(): List<ChatCompletionRequestUserMessageContentPart> =
+                    arrayOfContentParts.getOrThrow("arrayOfContentParts")
 
                 fun _json(): JsonValue? = _json
 
                 fun <T> accept(visitor: Visitor<T>): T {
                     return when {
-                        string != null -> visitor.visitString(string)
-                        chatCompletionRequestUserMessageContentParts != null ->
-                            visitor.visitChatCompletionRequestUserMessageContentParts(
-                                chatCompletionRequestUserMessageContentParts
-                            )
+                        textContent != null -> visitor.visitTextContent(textContent)
+                        arrayOfContentParts != null ->
+                            visitor.visitArrayOfContentParts(arrayOfContentParts)
                         else -> visitor.unknown(_json)
                     }
                 }
 
                 fun validate(): Content = apply {
                     if (!validated) {
-                        if (
-                            string == null && chatCompletionRequestUserMessageContentParts == null
-                        ) {
+                        if (textContent == null && arrayOfContentParts == null) {
                             throw OmnistackInvalidDataException("Unknown Content: $_json")
                         }
                         validated = true
@@ -2316,18 +2347,18 @@ constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is Content && this.string == other.string && this.chatCompletionRequestUserMessageContentParts == other.chatCompletionRequestUserMessageContentParts /* spotless:on */
+                    return /* spotless:off */ other is Content && this.textContent == other.textContent && this.arrayOfContentParts == other.arrayOfContentParts /* spotless:on */
                 }
 
                 override fun hashCode(): Int {
-                    return /* spotless:off */ Objects.hash(string, chatCompletionRequestUserMessageContentParts) /* spotless:on */
+                    return /* spotless:off */ Objects.hash(textContent, arrayOfContentParts) /* spotless:on */
                 }
 
                 override fun toString(): String {
                     return when {
-                        string != null -> "Content{string=$string}"
-                        chatCompletionRequestUserMessageContentParts != null ->
-                            "Content{chatCompletionRequestUserMessageContentParts=$chatCompletionRequestUserMessageContentParts}"
+                        textContent != null -> "Content{textContent=$textContent}"
+                        arrayOfContentParts != null ->
+                            "Content{arrayOfContentParts=$arrayOfContentParts}"
                         _json != null -> "Content{_unknown=$_json}"
                         else -> throw IllegalStateException("Invalid Content")
                     }
@@ -2335,25 +2366,19 @@ constructor(
 
                 companion object {
 
-                    fun ofString(string: String) = Content(string = string)
+                    fun ofTextContent(textContent: String) = Content(textContent = textContent)
 
-                    fun ofChatCompletionRequestUserMessageContentParts(
-                        chatCompletionRequestUserMessageContentParts:
-                            List<ChatCompletionRequestUserMessageContentPart>
-                    ) =
-                        Content(
-                            chatCompletionRequestUserMessageContentParts =
-                                chatCompletionRequestUserMessageContentParts
-                        )
+                    fun ofArrayOfContentParts(
+                        arrayOfContentParts: List<ChatCompletionRequestUserMessageContentPart>
+                    ) = Content(arrayOfContentParts = arrayOfContentParts)
                 }
 
                 interface Visitor<out T> {
 
-                    fun visitString(string: String): T
+                    fun visitTextContent(textContent: String): T
 
-                    fun visitChatCompletionRequestUserMessageContentParts(
-                        chatCompletionRequestUserMessageContentParts:
-                            List<ChatCompletionRequestUserMessageContentPart>
+                    fun visitArrayOfContentParts(
+                        arrayOfContentParts: List<ChatCompletionRequestUserMessageContentPart>
                     ): T
 
                     fun unknown(json: JsonValue?): T {
@@ -2365,18 +2390,16 @@ constructor(
 
                     override fun ObjectCodec.deserialize(node: JsonNode): Content {
                         val json = JsonValue.fromJsonNode(node)
+
                         tryDeserialize(node, jacksonTypeRef<String>())?.let {
-                            return Content(string = it, _json = json)
+                            return Content(textContent = it, _json = json)
                         }
                         tryDeserialize(
                                 node,
                                 jacksonTypeRef<List<ChatCompletionRequestUserMessageContentPart>>()
                             )
                             ?.let {
-                                return Content(
-                                    chatCompletionRequestUserMessageContentParts = it,
-                                    _json = json
-                                )
+                                return Content(arrayOfContentParts = it, _json = json)
                             }
 
                         return Content(_json = json)
@@ -2391,11 +2414,9 @@ constructor(
                         provider: SerializerProvider
                     ) {
                         when {
-                            value.string != null -> generator.writeObject(value.string)
-                            value.chatCompletionRequestUserMessageContentParts != null ->
-                                generator.writeObject(
-                                    value.chatCompletionRequestUserMessageContentParts
-                                )
+                            value.textContent != null -> generator.writeObject(value.textContent)
+                            value.arrayOfContentParts != null ->
+                                generator.writeObject(value.arrayOfContentParts)
                             value._json != null -> generator.writeObject(value._json)
                             else -> throw IllegalStateException("Invalid Content")
                         }
@@ -2555,6 +2576,7 @@ constructor(
                             node: JsonNode
                         ): ChatCompletionRequestUserMessageContentPart {
                             val json = JsonValue.fromJsonNode(node)
+
                             tryDeserialize(
                                     node,
                                     jacksonTypeRef<ChatCompletionRequestMessageContentPartText>()
@@ -2709,7 +2731,7 @@ constructor(
                                 ChatCompletionRequestMessageContentPartText(
                                     type,
                                     text,
-                                    additionalProperties.toUnmodifiable(),
+                                    additionalProperties.toImmutable(),
                                 )
                         }
 
@@ -2884,7 +2906,7 @@ constructor(
                                 ChatCompletionRequestMessageContentPartImage(
                                     type,
                                     imageUrl,
-                                    additionalProperties.toUnmodifiable(),
+                                    additionalProperties.toImmutable(),
                                 )
                         }
 
@@ -2994,7 +3016,7 @@ constructor(
                                     ImageUrl(
                                         url,
                                         detail,
-                                        additionalProperties.toUnmodifiable(),
+                                        additionalProperties.toImmutable(),
                                     )
                             }
 
@@ -3440,9 +3462,9 @@ constructor(
                         refusal,
                         role,
                         name,
-                        toolCalls.map { it.toUnmodifiable() },
+                        toolCalls.map { it.toImmutable() },
                         functionCall,
-                        additionalProperties.toUnmodifiable(),
+                        additionalProperties.toImmutable(),
                     )
             }
 
@@ -3501,8 +3523,8 @@ constructor(
             @JsonSerialize(using = Content.Serializer::class)
             class Content
             private constructor(
-                private val string: String? = null,
-                private val chatCompletionRequestAssistantMessageContentParts:
+                private val textContent: String? = null,
+                private val arrayOfContentParts:
                     List<ChatCompletionRequestAssistantMessageContentPart>? =
                     null,
                 private val _json: JsonValue? = null,
@@ -3511,47 +3533,38 @@ constructor(
                 private var validated: Boolean = false
 
                 /** The contents of the assistant message. */
-                fun string(): String? = string
+                fun textContent(): String? = textContent
                 /**
                  * An array of content parts with a defined type. Can be one or more of type `text`,
                  * or exactly one of type `refusal`.
                  */
-                fun chatCompletionRequestAssistantMessageContentParts():
-                    List<ChatCompletionRequestAssistantMessageContentPart>? =
-                    chatCompletionRequestAssistantMessageContentParts
+                fun arrayOfContentParts(): List<ChatCompletionRequestAssistantMessageContentPart>? =
+                    arrayOfContentParts
 
-                fun isString(): Boolean = string != null
+                fun isTextContent(): Boolean = textContent != null
 
-                fun isChatCompletionRequestAssistantMessageContentParts(): Boolean =
-                    chatCompletionRequestAssistantMessageContentParts != null
+                fun isArrayOfContentParts(): Boolean = arrayOfContentParts != null
 
-                fun asString(): String = string.getOrThrow("string")
+                fun asTextContent(): String = textContent.getOrThrow("textContent")
 
-                fun asChatCompletionRequestAssistantMessageContentParts():
+                fun asArrayOfContentParts():
                     List<ChatCompletionRequestAssistantMessageContentPart> =
-                    chatCompletionRequestAssistantMessageContentParts.getOrThrow(
-                        "chatCompletionRequestAssistantMessageContentParts"
-                    )
+                    arrayOfContentParts.getOrThrow("arrayOfContentParts")
 
                 fun _json(): JsonValue? = _json
 
                 fun <T> accept(visitor: Visitor<T>): T {
                     return when {
-                        string != null -> visitor.visitString(string)
-                        chatCompletionRequestAssistantMessageContentParts != null ->
-                            visitor.visitChatCompletionRequestAssistantMessageContentParts(
-                                chatCompletionRequestAssistantMessageContentParts
-                            )
+                        textContent != null -> visitor.visitTextContent(textContent)
+                        arrayOfContentParts != null ->
+                            visitor.visitArrayOfContentParts(arrayOfContentParts)
                         else -> visitor.unknown(_json)
                     }
                 }
 
                 fun validate(): Content = apply {
                     if (!validated) {
-                        if (
-                            string == null &&
-                                chatCompletionRequestAssistantMessageContentParts == null
-                        ) {
+                        if (textContent == null && arrayOfContentParts == null) {
                             throw OmnistackInvalidDataException("Unknown Content: $_json")
                         }
                         validated = true
@@ -3563,18 +3576,18 @@ constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is Content && this.string == other.string && this.chatCompletionRequestAssistantMessageContentParts == other.chatCompletionRequestAssistantMessageContentParts /* spotless:on */
+                    return /* spotless:off */ other is Content && this.textContent == other.textContent && this.arrayOfContentParts == other.arrayOfContentParts /* spotless:on */
                 }
 
                 override fun hashCode(): Int {
-                    return /* spotless:off */ Objects.hash(string, chatCompletionRequestAssistantMessageContentParts) /* spotless:on */
+                    return /* spotless:off */ Objects.hash(textContent, arrayOfContentParts) /* spotless:on */
                 }
 
                 override fun toString(): String {
                     return when {
-                        string != null -> "Content{string=$string}"
-                        chatCompletionRequestAssistantMessageContentParts != null ->
-                            "Content{chatCompletionRequestAssistantMessageContentParts=$chatCompletionRequestAssistantMessageContentParts}"
+                        textContent != null -> "Content{textContent=$textContent}"
+                        arrayOfContentParts != null ->
+                            "Content{arrayOfContentParts=$arrayOfContentParts}"
                         _json != null -> "Content{_unknown=$_json}"
                         else -> throw IllegalStateException("Invalid Content")
                     }
@@ -3582,25 +3595,19 @@ constructor(
 
                 companion object {
 
-                    fun ofString(string: String) = Content(string = string)
+                    fun ofTextContent(textContent: String) = Content(textContent = textContent)
 
-                    fun ofChatCompletionRequestAssistantMessageContentParts(
-                        chatCompletionRequestAssistantMessageContentParts:
-                            List<ChatCompletionRequestAssistantMessageContentPart>
-                    ) =
-                        Content(
-                            chatCompletionRequestAssistantMessageContentParts =
-                                chatCompletionRequestAssistantMessageContentParts
-                        )
+                    fun ofArrayOfContentParts(
+                        arrayOfContentParts: List<ChatCompletionRequestAssistantMessageContentPart>
+                    ) = Content(arrayOfContentParts = arrayOfContentParts)
                 }
 
                 interface Visitor<out T> {
 
-                    fun visitString(string: String): T
+                    fun visitTextContent(textContent: String): T
 
-                    fun visitChatCompletionRequestAssistantMessageContentParts(
-                        chatCompletionRequestAssistantMessageContentParts:
-                            List<ChatCompletionRequestAssistantMessageContentPart>
+                    fun visitArrayOfContentParts(
+                        arrayOfContentParts: List<ChatCompletionRequestAssistantMessageContentPart>
                     ): T
 
                     fun unknown(json: JsonValue?): T {
@@ -3612,8 +3619,9 @@ constructor(
 
                     override fun ObjectCodec.deserialize(node: JsonNode): Content {
                         val json = JsonValue.fromJsonNode(node)
+
                         tryDeserialize(node, jacksonTypeRef<String>())?.let {
-                            return Content(string = it, _json = json)
+                            return Content(textContent = it, _json = json)
                         }
                         tryDeserialize(
                                 node,
@@ -3622,10 +3630,7 @@ constructor(
                                 >()
                             )
                             ?.let {
-                                return Content(
-                                    chatCompletionRequestAssistantMessageContentParts = it,
-                                    _json = json
-                                )
+                                return Content(arrayOfContentParts = it, _json = json)
                             }
 
                         return Content(_json = json)
@@ -3640,11 +3645,9 @@ constructor(
                         provider: SerializerProvider
                     ) {
                         when {
-                            value.string != null -> generator.writeObject(value.string)
-                            value.chatCompletionRequestAssistantMessageContentParts != null ->
-                                generator.writeObject(
-                                    value.chatCompletionRequestAssistantMessageContentParts
-                                )
+                            value.textContent != null -> generator.writeObject(value.textContent)
+                            value.arrayOfContentParts != null ->
+                                generator.writeObject(value.arrayOfContentParts)
                             value._json != null -> generator.writeObject(value._json)
                             else -> throw IllegalStateException("Invalid Content")
                         }
@@ -3804,6 +3807,7 @@ constructor(
                             node: JsonNode
                         ): ChatCompletionRequestAssistantMessageContentPart {
                             val json = JsonValue.fromJsonNode(node)
+
                             tryDeserialize(
                                     node,
                                     jacksonTypeRef<ChatCompletionRequestMessageContentPartText>()
@@ -3958,7 +3962,7 @@ constructor(
                                 ChatCompletionRequestMessageContentPartText(
                                     type,
                                     text,
-                                    additionalProperties.toUnmodifiable(),
+                                    additionalProperties.toImmutable(),
                                 )
                         }
 
@@ -4137,7 +4141,7 @@ constructor(
                                 ChatCompletionRequestMessageContentPartRefusal(
                                     type,
                                     refusal,
-                                    additionalProperties.toUnmodifiable(),
+                                    additionalProperties.toImmutable(),
                                 )
                         }
 
@@ -4332,7 +4336,7 @@ constructor(
                         FunctionCall(
                             arguments,
                             name,
-                            additionalProperties.toUnmodifiable(),
+                            additionalProperties.toImmutable(),
                         )
                 }
 
@@ -4465,7 +4469,7 @@ constructor(
                             id,
                             type,
                             function,
-                            additionalProperties.toUnmodifiable(),
+                            additionalProperties.toImmutable(),
                         )
                 }
 
@@ -4582,7 +4586,7 @@ constructor(
                             Function(
                                 name,
                                 arguments,
-                                additionalProperties.toUnmodifiable(),
+                                additionalProperties.toImmutable(),
                             )
                     }
 
@@ -4813,7 +4817,7 @@ constructor(
                         role,
                         content,
                         toolCallId,
-                        additionalProperties.toUnmodifiable(),
+                        additionalProperties.toImmutable(),
                     )
             }
 
@@ -4821,8 +4825,8 @@ constructor(
             @JsonSerialize(using = Content.Serializer::class)
             class Content
             private constructor(
-                private val string: String? = null,
-                private val chatCompletionRequestMessageContentPartTexts:
+                private val textContent: String? = null,
+                private val arrayOfContentParts:
                     List<ChatCompletionRequestMessageContentPartText>? =
                     null,
                 private val _json: JsonValue? = null,
@@ -4831,49 +4835,40 @@ constructor(
                 private var validated: Boolean = false
 
                 /** The contents of the tool message. */
-                fun string(): String? = string
+                fun textContent(): String? = textContent
                 /**
                  * An array of content parts with a defined type. For tool messages, only type
                  * `text` is supported.
                  */
-                fun chatCompletionRequestMessageContentPartTexts():
-                    List<ChatCompletionRequestMessageContentPartText>? =
-                    chatCompletionRequestMessageContentPartTexts
+                fun arrayOfContentParts(): List<ChatCompletionRequestMessageContentPartText>? =
+                    arrayOfContentParts
 
-                fun isString(): Boolean = string != null
+                fun isTextContent(): Boolean = textContent != null
 
-                fun isChatCompletionRequestMessageContentPartTexts(): Boolean =
-                    chatCompletionRequestMessageContentPartTexts != null
+                fun isArrayOfContentParts(): Boolean = arrayOfContentParts != null
 
-                fun asString(): String = string.getOrThrow("string")
+                fun asTextContent(): String = textContent.getOrThrow("textContent")
 
-                fun asChatCompletionRequestMessageContentPartTexts():
-                    List<ChatCompletionRequestMessageContentPartText> =
-                    chatCompletionRequestMessageContentPartTexts.getOrThrow(
-                        "chatCompletionRequestMessageContentPartTexts"
-                    )
+                fun asArrayOfContentParts(): List<ChatCompletionRequestMessageContentPartText> =
+                    arrayOfContentParts.getOrThrow("arrayOfContentParts")
 
                 fun _json(): JsonValue? = _json
 
                 fun <T> accept(visitor: Visitor<T>): T {
                     return when {
-                        string != null -> visitor.visitString(string)
-                        chatCompletionRequestMessageContentPartTexts != null ->
-                            visitor.visitChatCompletionRequestMessageContentPartTexts(
-                                chatCompletionRequestMessageContentPartTexts
-                            )
+                        textContent != null -> visitor.visitTextContent(textContent)
+                        arrayOfContentParts != null ->
+                            visitor.visitArrayOfContentParts(arrayOfContentParts)
                         else -> visitor.unknown(_json)
                     }
                 }
 
                 fun validate(): Content = apply {
                     if (!validated) {
-                        if (
-                            string == null && chatCompletionRequestMessageContentPartTexts == null
-                        ) {
+                        if (textContent == null && arrayOfContentParts == null) {
                             throw OmnistackInvalidDataException("Unknown Content: $_json")
                         }
-                        chatCompletionRequestMessageContentPartTexts?.forEach { it.validate() }
+                        arrayOfContentParts?.forEach { it.validate() }
                         validated = true
                     }
                 }
@@ -4883,18 +4878,18 @@ constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is Content && this.string == other.string && this.chatCompletionRequestMessageContentPartTexts == other.chatCompletionRequestMessageContentPartTexts /* spotless:on */
+                    return /* spotless:off */ other is Content && this.textContent == other.textContent && this.arrayOfContentParts == other.arrayOfContentParts /* spotless:on */
                 }
 
                 override fun hashCode(): Int {
-                    return /* spotless:off */ Objects.hash(string, chatCompletionRequestMessageContentPartTexts) /* spotless:on */
+                    return /* spotless:off */ Objects.hash(textContent, arrayOfContentParts) /* spotless:on */
                 }
 
                 override fun toString(): String {
                     return when {
-                        string != null -> "Content{string=$string}"
-                        chatCompletionRequestMessageContentPartTexts != null ->
-                            "Content{chatCompletionRequestMessageContentPartTexts=$chatCompletionRequestMessageContentPartTexts}"
+                        textContent != null -> "Content{textContent=$textContent}"
+                        arrayOfContentParts != null ->
+                            "Content{arrayOfContentParts=$arrayOfContentParts}"
                         _json != null -> "Content{_unknown=$_json}"
                         else -> throw IllegalStateException("Invalid Content")
                     }
@@ -4902,25 +4897,19 @@ constructor(
 
                 companion object {
 
-                    fun ofString(string: String) = Content(string = string)
+                    fun ofTextContent(textContent: String) = Content(textContent = textContent)
 
-                    fun ofChatCompletionRequestMessageContentPartTexts(
-                        chatCompletionRequestMessageContentPartTexts:
-                            List<ChatCompletionRequestMessageContentPartText>
-                    ) =
-                        Content(
-                            chatCompletionRequestMessageContentPartTexts =
-                                chatCompletionRequestMessageContentPartTexts
-                        )
+                    fun ofArrayOfContentParts(
+                        arrayOfContentParts: List<ChatCompletionRequestMessageContentPartText>
+                    ) = Content(arrayOfContentParts = arrayOfContentParts)
                 }
 
                 interface Visitor<out T> {
 
-                    fun visitString(string: String): T
+                    fun visitTextContent(textContent: String): T
 
-                    fun visitChatCompletionRequestMessageContentPartTexts(
-                        chatCompletionRequestMessageContentPartTexts:
-                            List<ChatCompletionRequestMessageContentPartText>
+                    fun visitArrayOfContentParts(
+                        arrayOfContentParts: List<ChatCompletionRequestMessageContentPartText>
                     ): T
 
                     fun unknown(json: JsonValue?): T {
@@ -4932,8 +4921,9 @@ constructor(
 
                     override fun ObjectCodec.deserialize(node: JsonNode): Content {
                         val json = JsonValue.fromJsonNode(node)
+
                         tryDeserialize(node, jacksonTypeRef<String>())?.let {
-                            return Content(string = it, _json = json)
+                            return Content(textContent = it, _json = json)
                         }
                         tryDeserialize(
                                 node,
@@ -4942,10 +4932,7 @@ constructor(
                                 it.forEach { it.validate() }
                             }
                             ?.let {
-                                return Content(
-                                    chatCompletionRequestMessageContentPartTexts = it,
-                                    _json = json
-                                )
+                                return Content(arrayOfContentParts = it, _json = json)
                             }
 
                         return Content(_json = json)
@@ -4960,11 +4947,9 @@ constructor(
                         provider: SerializerProvider
                     ) {
                         when {
-                            value.string != null -> generator.writeObject(value.string)
-                            value.chatCompletionRequestMessageContentPartTexts != null ->
-                                generator.writeObject(
-                                    value.chatCompletionRequestMessageContentPartTexts
-                                )
+                            value.textContent != null -> generator.writeObject(value.textContent)
+                            value.arrayOfContentParts != null ->
+                                generator.writeObject(value.arrayOfContentParts)
                             value._json != null -> generator.writeObject(value._json)
                             else -> throw IllegalStateException("Invalid Content")
                         }
@@ -5068,7 +5053,7 @@ constructor(
                             ChatCompletionRequestMessageContentPartText(
                                 type,
                                 text,
-                                additionalProperties.toUnmodifiable(),
+                                additionalProperties.toImmutable(),
                             )
                     }
 
@@ -5328,7 +5313,7 @@ constructor(
                         role,
                         content,
                         name,
-                        additionalProperties.toUnmodifiable(),
+                        additionalProperties.toImmutable(),
                     )
             }
 
@@ -5405,336 +5390,223 @@ constructor(
         }
     }
 
-    @JsonDeserialize(using = Model.Deserializer::class)
-    @JsonSerialize(using = Model.Serializer::class)
     class Model
+    @JsonCreator
     private constructor(
-        private val string: String? = null,
-        private val unionMember1: UnionMember1? = null,
-        private val _json: JsonValue? = null,
-    ) {
+        private val value: JsonField<String>,
+    ) : Enum {
 
-        private var validated: Boolean = false
-
-        fun string(): String? = string
-
-        fun unionMember1(): UnionMember1? = unionMember1
-
-        fun isString(): Boolean = string != null
-
-        fun isUnionMember1(): Boolean = unionMember1 != null
-
-        fun asString(): String = string.getOrThrow("string")
-
-        fun asUnionMember1(): UnionMember1 = unionMember1.getOrThrow("unionMember1")
-
-        fun _json(): JsonValue? = _json
-
-        fun <T> accept(visitor: Visitor<T>): T {
-            return when {
-                string != null -> visitor.visitString(string)
-                unionMember1 != null -> visitor.visitUnionMember1(unionMember1)
-                else -> visitor.unknown(_json)
-            }
-        }
-
-        fun validate(): Model = apply {
-            if (!validated) {
-                if (string == null && unionMember1 == null) {
-                    throw OmnistackInvalidDataException("Unknown Model: $_json")
-                }
-                validated = true
-            }
-        }
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
                 return true
             }
 
-            return /* spotless:off */ other is Model && this.string == other.string && this.unionMember1 == other.unionMember1 /* spotless:on */
+            return /* spotless:off */ other is Model && this.value == other.value /* spotless:on */
         }
 
-        override fun hashCode(): Int {
-            return /* spotless:off */ Objects.hash(string, unionMember1) /* spotless:on */
-        }
+        override fun hashCode() = value.hashCode()
 
-        override fun toString(): String {
-            return when {
-                string != null -> "Model{string=$string}"
-                unionMember1 != null -> "Model{unionMember1=$unionMember1}"
-                _json != null -> "Model{_unknown=$_json}"
-                else -> throw IllegalStateException("Invalid Model")
-            }
-        }
+        override fun toString() = value.toString()
 
         companion object {
 
-            fun ofString(string: String) = Model(string = string)
+            val O1_PREVIEW = Model(JsonField.of("o1-preview"))
 
-            fun ofUnionMember1(unionMember1: UnionMember1) = Model(unionMember1 = unionMember1)
+            val O1_PREVIEW_2024_09_12 = Model(JsonField.of("o1-preview-2024-09-12"))
+
+            val O1_MINI = Model(JsonField.of("o1-mini"))
+
+            val O1_MINI_2024_09_12 = Model(JsonField.of("o1-mini-2024-09-12"))
+
+            val GPT_4O = Model(JsonField.of("gpt-4o"))
+
+            val GPT_4O_2024_08_06 = Model(JsonField.of("gpt-4o-2024-08-06"))
+
+            val GPT_4O_2024_05_13 = Model(JsonField.of("gpt-4o-2024-05-13"))
+
+            val CHATGPT_4O_LATEST = Model(JsonField.of("chatgpt-4o-latest"))
+
+            val GPT_4O_MINI = Model(JsonField.of("gpt-4o-mini"))
+
+            val GPT_4O_MINI_2024_07_18 = Model(JsonField.of("gpt-4o-mini-2024-07-18"))
+
+            val GPT_4_TURBO = Model(JsonField.of("gpt-4-turbo"))
+
+            val GPT_4_TURBO_2024_04_09 = Model(JsonField.of("gpt-4-turbo-2024-04-09"))
+
+            val GPT_4_0125_PREVIEW = Model(JsonField.of("gpt-4-0125-preview"))
+
+            val GPT_4_TURBO_PREVIEW = Model(JsonField.of("gpt-4-turbo-preview"))
+
+            val GPT_4_1106_PREVIEW = Model(JsonField.of("gpt-4-1106-preview"))
+
+            val GPT_4_VISION_PREVIEW = Model(JsonField.of("gpt-4-vision-preview"))
+
+            val GPT_4 = Model(JsonField.of("gpt-4"))
+
+            val GPT_4_0314 = Model(JsonField.of("gpt-4-0314"))
+
+            val GPT_4_0613 = Model(JsonField.of("gpt-4-0613"))
+
+            val GPT_4_32K = Model(JsonField.of("gpt-4-32k"))
+
+            val GPT_4_32K_0314 = Model(JsonField.of("gpt-4-32k-0314"))
+
+            val GPT_4_32K_0613 = Model(JsonField.of("gpt-4-32k-0613"))
+
+            val GPT_3_5_TURBO = Model(JsonField.of("gpt-3.5-turbo"))
+
+            val GPT_3_5_TURBO_16K = Model(JsonField.of("gpt-3.5-turbo-16k"))
+
+            val GPT_3_5_TURBO_0301 = Model(JsonField.of("gpt-3.5-turbo-0301"))
+
+            val GPT_3_5_TURBO_0613 = Model(JsonField.of("gpt-3.5-turbo-0613"))
+
+            val GPT_3_5_TURBO_1106 = Model(JsonField.of("gpt-3.5-turbo-1106"))
+
+            val GPT_3_5_TURBO_0125 = Model(JsonField.of("gpt-3.5-turbo-0125"))
+
+            val GPT_3_5_TURBO_16K_0613 = Model(JsonField.of("gpt-3.5-turbo-16k-0613"))
+
+            fun of(value: String) = Model(JsonField.of(value))
         }
 
-        interface Visitor<out T> {
-
-            fun visitString(string: String): T
-
-            fun visitUnionMember1(unionMember1: UnionMember1): T
-
-            fun unknown(json: JsonValue?): T {
-                throw OmnistackInvalidDataException("Unknown Model: $json")
-            }
+        enum class Known {
+            O1_PREVIEW,
+            O1_PREVIEW_2024_09_12,
+            O1_MINI,
+            O1_MINI_2024_09_12,
+            GPT_4O,
+            GPT_4O_2024_08_06,
+            GPT_4O_2024_05_13,
+            CHATGPT_4O_LATEST,
+            GPT_4O_MINI,
+            GPT_4O_MINI_2024_07_18,
+            GPT_4_TURBO,
+            GPT_4_TURBO_2024_04_09,
+            GPT_4_0125_PREVIEW,
+            GPT_4_TURBO_PREVIEW,
+            GPT_4_1106_PREVIEW,
+            GPT_4_VISION_PREVIEW,
+            GPT_4,
+            GPT_4_0314,
+            GPT_4_0613,
+            GPT_4_32K,
+            GPT_4_32K_0314,
+            GPT_4_32K_0613,
+            GPT_3_5_TURBO,
+            GPT_3_5_TURBO_16K,
+            GPT_3_5_TURBO_0301,
+            GPT_3_5_TURBO_0613,
+            GPT_3_5_TURBO_1106,
+            GPT_3_5_TURBO_0125,
+            GPT_3_5_TURBO_16K_0613,
         }
 
-        class Deserializer : BaseDeserializer<Model>(Model::class) {
-
-            override fun ObjectCodec.deserialize(node: JsonNode): Model {
-                val json = JsonValue.fromJsonNode(node)
-                tryDeserialize(node, jacksonTypeRef<String>())?.let {
-                    return Model(string = it, _json = json)
-                }
-                tryDeserialize(node, jacksonTypeRef<UnionMember1>())?.let {
-                    return Model(unionMember1 = it, _json = json)
-                }
-
-                return Model(_json = json)
-            }
+        enum class Value {
+            O1_PREVIEW,
+            O1_PREVIEW_2024_09_12,
+            O1_MINI,
+            O1_MINI_2024_09_12,
+            GPT_4O,
+            GPT_4O_2024_08_06,
+            GPT_4O_2024_05_13,
+            CHATGPT_4O_LATEST,
+            GPT_4O_MINI,
+            GPT_4O_MINI_2024_07_18,
+            GPT_4_TURBO,
+            GPT_4_TURBO_2024_04_09,
+            GPT_4_0125_PREVIEW,
+            GPT_4_TURBO_PREVIEW,
+            GPT_4_1106_PREVIEW,
+            GPT_4_VISION_PREVIEW,
+            GPT_4,
+            GPT_4_0314,
+            GPT_4_0613,
+            GPT_4_32K,
+            GPT_4_32K_0314,
+            GPT_4_32K_0613,
+            GPT_3_5_TURBO,
+            GPT_3_5_TURBO_16K,
+            GPT_3_5_TURBO_0301,
+            GPT_3_5_TURBO_0613,
+            GPT_3_5_TURBO_1106,
+            GPT_3_5_TURBO_0125,
+            GPT_3_5_TURBO_16K_0613,
+            _UNKNOWN,
         }
 
-        class Serializer : BaseSerializer<Model>(Model::class) {
-
-            override fun serialize(
-                value: Model,
-                generator: JsonGenerator,
-                provider: SerializerProvider
-            ) {
-                when {
-                    value.string != null -> generator.writeObject(value.string)
-                    value.unionMember1 != null -> generator.writeObject(value.unionMember1)
-                    value._json != null -> generator.writeObject(value._json)
-                    else -> throw IllegalStateException("Invalid Model")
-                }
-            }
-        }
-
-        class UnionMember1
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
-
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return /* spotless:off */ other is UnionMember1 && this.value == other.value /* spotless:on */
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-
-            companion object {
-
-                val O1_PREVIEW = UnionMember1(JsonField.of("o1-preview"))
-
-                val O1_PREVIEW_2024_09_12 = UnionMember1(JsonField.of("o1-preview-2024-09-12"))
-
-                val O1_MINI = UnionMember1(JsonField.of("o1-mini"))
-
-                val O1_MINI_2024_09_12 = UnionMember1(JsonField.of("o1-mini-2024-09-12"))
-
-                val GPT_4O = UnionMember1(JsonField.of("gpt-4o"))
-
-                val GPT_4O_2024_08_06 = UnionMember1(JsonField.of("gpt-4o-2024-08-06"))
-
-                val GPT_4O_2024_05_13 = UnionMember1(JsonField.of("gpt-4o-2024-05-13"))
-
-                val CHATGPT_4O_LATEST = UnionMember1(JsonField.of("chatgpt-4o-latest"))
-
-                val GPT_4O_MINI = UnionMember1(JsonField.of("gpt-4o-mini"))
-
-                val GPT_4O_MINI_2024_07_18 = UnionMember1(JsonField.of("gpt-4o-mini-2024-07-18"))
-
-                val GPT_4_TURBO = UnionMember1(JsonField.of("gpt-4-turbo"))
-
-                val GPT_4_TURBO_2024_04_09 = UnionMember1(JsonField.of("gpt-4-turbo-2024-04-09"))
-
-                val GPT_4_0125_PREVIEW = UnionMember1(JsonField.of("gpt-4-0125-preview"))
-
-                val GPT_4_TURBO_PREVIEW = UnionMember1(JsonField.of("gpt-4-turbo-preview"))
-
-                val GPT_4_1106_PREVIEW = UnionMember1(JsonField.of("gpt-4-1106-preview"))
-
-                val GPT_4_VISION_PREVIEW = UnionMember1(JsonField.of("gpt-4-vision-preview"))
-
-                val GPT_4 = UnionMember1(JsonField.of("gpt-4"))
-
-                val GPT_4_0314 = UnionMember1(JsonField.of("gpt-4-0314"))
-
-                val GPT_4_0613 = UnionMember1(JsonField.of("gpt-4-0613"))
-
-                val GPT_4_32K = UnionMember1(JsonField.of("gpt-4-32k"))
-
-                val GPT_4_32K_0314 = UnionMember1(JsonField.of("gpt-4-32k-0314"))
-
-                val GPT_4_32K_0613 = UnionMember1(JsonField.of("gpt-4-32k-0613"))
-
-                val GPT_3_5_TURBO = UnionMember1(JsonField.of("gpt-3.5-turbo"))
-
-                val GPT_3_5_TURBO_16K = UnionMember1(JsonField.of("gpt-3.5-turbo-16k"))
-
-                val GPT_3_5_TURBO_0301 = UnionMember1(JsonField.of("gpt-3.5-turbo-0301"))
-
-                val GPT_3_5_TURBO_0613 = UnionMember1(JsonField.of("gpt-3.5-turbo-0613"))
-
-                val GPT_3_5_TURBO_1106 = UnionMember1(JsonField.of("gpt-3.5-turbo-1106"))
-
-                val GPT_3_5_TURBO_0125 = UnionMember1(JsonField.of("gpt-3.5-turbo-0125"))
-
-                val GPT_3_5_TURBO_16K_0613 = UnionMember1(JsonField.of("gpt-3.5-turbo-16k-0613"))
-
-                fun of(value: String) = UnionMember1(JsonField.of(value))
+        fun value(): Value =
+            when (this) {
+                O1_PREVIEW -> Value.O1_PREVIEW
+                O1_PREVIEW_2024_09_12 -> Value.O1_PREVIEW_2024_09_12
+                O1_MINI -> Value.O1_MINI
+                O1_MINI_2024_09_12 -> Value.O1_MINI_2024_09_12
+                GPT_4O -> Value.GPT_4O
+                GPT_4O_2024_08_06 -> Value.GPT_4O_2024_08_06
+                GPT_4O_2024_05_13 -> Value.GPT_4O_2024_05_13
+                CHATGPT_4O_LATEST -> Value.CHATGPT_4O_LATEST
+                GPT_4O_MINI -> Value.GPT_4O_MINI
+                GPT_4O_MINI_2024_07_18 -> Value.GPT_4O_MINI_2024_07_18
+                GPT_4_TURBO -> Value.GPT_4_TURBO
+                GPT_4_TURBO_2024_04_09 -> Value.GPT_4_TURBO_2024_04_09
+                GPT_4_0125_PREVIEW -> Value.GPT_4_0125_PREVIEW
+                GPT_4_TURBO_PREVIEW -> Value.GPT_4_TURBO_PREVIEW
+                GPT_4_1106_PREVIEW -> Value.GPT_4_1106_PREVIEW
+                GPT_4_VISION_PREVIEW -> Value.GPT_4_VISION_PREVIEW
+                GPT_4 -> Value.GPT_4
+                GPT_4_0314 -> Value.GPT_4_0314
+                GPT_4_0613 -> Value.GPT_4_0613
+                GPT_4_32K -> Value.GPT_4_32K
+                GPT_4_32K_0314 -> Value.GPT_4_32K_0314
+                GPT_4_32K_0613 -> Value.GPT_4_32K_0613
+                GPT_3_5_TURBO -> Value.GPT_3_5_TURBO
+                GPT_3_5_TURBO_16K -> Value.GPT_3_5_TURBO_16K
+                GPT_3_5_TURBO_0301 -> Value.GPT_3_5_TURBO_0301
+                GPT_3_5_TURBO_0613 -> Value.GPT_3_5_TURBO_0613
+                GPT_3_5_TURBO_1106 -> Value.GPT_3_5_TURBO_1106
+                GPT_3_5_TURBO_0125 -> Value.GPT_3_5_TURBO_0125
+                GPT_3_5_TURBO_16K_0613 -> Value.GPT_3_5_TURBO_16K_0613
+                else -> Value._UNKNOWN
             }
 
-            enum class Known {
-                O1_PREVIEW,
-                O1_PREVIEW_2024_09_12,
-                O1_MINI,
-                O1_MINI_2024_09_12,
-                GPT_4O,
-                GPT_4O_2024_08_06,
-                GPT_4O_2024_05_13,
-                CHATGPT_4O_LATEST,
-                GPT_4O_MINI,
-                GPT_4O_MINI_2024_07_18,
-                GPT_4_TURBO,
-                GPT_4_TURBO_2024_04_09,
-                GPT_4_0125_PREVIEW,
-                GPT_4_TURBO_PREVIEW,
-                GPT_4_1106_PREVIEW,
-                GPT_4_VISION_PREVIEW,
-                GPT_4,
-                GPT_4_0314,
-                GPT_4_0613,
-                GPT_4_32K,
-                GPT_4_32K_0314,
-                GPT_4_32K_0613,
-                GPT_3_5_TURBO,
-                GPT_3_5_TURBO_16K,
-                GPT_3_5_TURBO_0301,
-                GPT_3_5_TURBO_0613,
-                GPT_3_5_TURBO_1106,
-                GPT_3_5_TURBO_0125,
-                GPT_3_5_TURBO_16K_0613,
+        fun known(): Known =
+            when (this) {
+                O1_PREVIEW -> Known.O1_PREVIEW
+                O1_PREVIEW_2024_09_12 -> Known.O1_PREVIEW_2024_09_12
+                O1_MINI -> Known.O1_MINI
+                O1_MINI_2024_09_12 -> Known.O1_MINI_2024_09_12
+                GPT_4O -> Known.GPT_4O
+                GPT_4O_2024_08_06 -> Known.GPT_4O_2024_08_06
+                GPT_4O_2024_05_13 -> Known.GPT_4O_2024_05_13
+                CHATGPT_4O_LATEST -> Known.CHATGPT_4O_LATEST
+                GPT_4O_MINI -> Known.GPT_4O_MINI
+                GPT_4O_MINI_2024_07_18 -> Known.GPT_4O_MINI_2024_07_18
+                GPT_4_TURBO -> Known.GPT_4_TURBO
+                GPT_4_TURBO_2024_04_09 -> Known.GPT_4_TURBO_2024_04_09
+                GPT_4_0125_PREVIEW -> Known.GPT_4_0125_PREVIEW
+                GPT_4_TURBO_PREVIEW -> Known.GPT_4_TURBO_PREVIEW
+                GPT_4_1106_PREVIEW -> Known.GPT_4_1106_PREVIEW
+                GPT_4_VISION_PREVIEW -> Known.GPT_4_VISION_PREVIEW
+                GPT_4 -> Known.GPT_4
+                GPT_4_0314 -> Known.GPT_4_0314
+                GPT_4_0613 -> Known.GPT_4_0613
+                GPT_4_32K -> Known.GPT_4_32K
+                GPT_4_32K_0314 -> Known.GPT_4_32K_0314
+                GPT_4_32K_0613 -> Known.GPT_4_32K_0613
+                GPT_3_5_TURBO -> Known.GPT_3_5_TURBO
+                GPT_3_5_TURBO_16K -> Known.GPT_3_5_TURBO_16K
+                GPT_3_5_TURBO_0301 -> Known.GPT_3_5_TURBO_0301
+                GPT_3_5_TURBO_0613 -> Known.GPT_3_5_TURBO_0613
+                GPT_3_5_TURBO_1106 -> Known.GPT_3_5_TURBO_1106
+                GPT_3_5_TURBO_0125 -> Known.GPT_3_5_TURBO_0125
+                GPT_3_5_TURBO_16K_0613 -> Known.GPT_3_5_TURBO_16K_0613
+                else -> throw OmnistackInvalidDataException("Unknown Model: $value")
             }
 
-            enum class Value {
-                O1_PREVIEW,
-                O1_PREVIEW_2024_09_12,
-                O1_MINI,
-                O1_MINI_2024_09_12,
-                GPT_4O,
-                GPT_4O_2024_08_06,
-                GPT_4O_2024_05_13,
-                CHATGPT_4O_LATEST,
-                GPT_4O_MINI,
-                GPT_4O_MINI_2024_07_18,
-                GPT_4_TURBO,
-                GPT_4_TURBO_2024_04_09,
-                GPT_4_0125_PREVIEW,
-                GPT_4_TURBO_PREVIEW,
-                GPT_4_1106_PREVIEW,
-                GPT_4_VISION_PREVIEW,
-                GPT_4,
-                GPT_4_0314,
-                GPT_4_0613,
-                GPT_4_32K,
-                GPT_4_32K_0314,
-                GPT_4_32K_0613,
-                GPT_3_5_TURBO,
-                GPT_3_5_TURBO_16K,
-                GPT_3_5_TURBO_0301,
-                GPT_3_5_TURBO_0613,
-                GPT_3_5_TURBO_1106,
-                GPT_3_5_TURBO_0125,
-                GPT_3_5_TURBO_16K_0613,
-                _UNKNOWN,
-            }
-
-            fun value(): Value =
-                when (this) {
-                    O1_PREVIEW -> Value.O1_PREVIEW
-                    O1_PREVIEW_2024_09_12 -> Value.O1_PREVIEW_2024_09_12
-                    O1_MINI -> Value.O1_MINI
-                    O1_MINI_2024_09_12 -> Value.O1_MINI_2024_09_12
-                    GPT_4O -> Value.GPT_4O
-                    GPT_4O_2024_08_06 -> Value.GPT_4O_2024_08_06
-                    GPT_4O_2024_05_13 -> Value.GPT_4O_2024_05_13
-                    CHATGPT_4O_LATEST -> Value.CHATGPT_4O_LATEST
-                    GPT_4O_MINI -> Value.GPT_4O_MINI
-                    GPT_4O_MINI_2024_07_18 -> Value.GPT_4O_MINI_2024_07_18
-                    GPT_4_TURBO -> Value.GPT_4_TURBO
-                    GPT_4_TURBO_2024_04_09 -> Value.GPT_4_TURBO_2024_04_09
-                    GPT_4_0125_PREVIEW -> Value.GPT_4_0125_PREVIEW
-                    GPT_4_TURBO_PREVIEW -> Value.GPT_4_TURBO_PREVIEW
-                    GPT_4_1106_PREVIEW -> Value.GPT_4_1106_PREVIEW
-                    GPT_4_VISION_PREVIEW -> Value.GPT_4_VISION_PREVIEW
-                    GPT_4 -> Value.GPT_4
-                    GPT_4_0314 -> Value.GPT_4_0314
-                    GPT_4_0613 -> Value.GPT_4_0613
-                    GPT_4_32K -> Value.GPT_4_32K
-                    GPT_4_32K_0314 -> Value.GPT_4_32K_0314
-                    GPT_4_32K_0613 -> Value.GPT_4_32K_0613
-                    GPT_3_5_TURBO -> Value.GPT_3_5_TURBO
-                    GPT_3_5_TURBO_16K -> Value.GPT_3_5_TURBO_16K
-                    GPT_3_5_TURBO_0301 -> Value.GPT_3_5_TURBO_0301
-                    GPT_3_5_TURBO_0613 -> Value.GPT_3_5_TURBO_0613
-                    GPT_3_5_TURBO_1106 -> Value.GPT_3_5_TURBO_1106
-                    GPT_3_5_TURBO_0125 -> Value.GPT_3_5_TURBO_0125
-                    GPT_3_5_TURBO_16K_0613 -> Value.GPT_3_5_TURBO_16K_0613
-                    else -> Value._UNKNOWN
-                }
-
-            fun known(): Known =
-                when (this) {
-                    O1_PREVIEW -> Known.O1_PREVIEW
-                    O1_PREVIEW_2024_09_12 -> Known.O1_PREVIEW_2024_09_12
-                    O1_MINI -> Known.O1_MINI
-                    O1_MINI_2024_09_12 -> Known.O1_MINI_2024_09_12
-                    GPT_4O -> Known.GPT_4O
-                    GPT_4O_2024_08_06 -> Known.GPT_4O_2024_08_06
-                    GPT_4O_2024_05_13 -> Known.GPT_4O_2024_05_13
-                    CHATGPT_4O_LATEST -> Known.CHATGPT_4O_LATEST
-                    GPT_4O_MINI -> Known.GPT_4O_MINI
-                    GPT_4O_MINI_2024_07_18 -> Known.GPT_4O_MINI_2024_07_18
-                    GPT_4_TURBO -> Known.GPT_4_TURBO
-                    GPT_4_TURBO_2024_04_09 -> Known.GPT_4_TURBO_2024_04_09
-                    GPT_4_0125_PREVIEW -> Known.GPT_4_0125_PREVIEW
-                    GPT_4_TURBO_PREVIEW -> Known.GPT_4_TURBO_PREVIEW
-                    GPT_4_1106_PREVIEW -> Known.GPT_4_1106_PREVIEW
-                    GPT_4_VISION_PREVIEW -> Known.GPT_4_VISION_PREVIEW
-                    GPT_4 -> Known.GPT_4
-                    GPT_4_0314 -> Known.GPT_4_0314
-                    GPT_4_0613 -> Known.GPT_4_0613
-                    GPT_4_32K -> Known.GPT_4_32K
-                    GPT_4_32K_0314 -> Known.GPT_4_32K_0314
-                    GPT_4_32K_0613 -> Known.GPT_4_32K_0613
-                    GPT_3_5_TURBO -> Known.GPT_3_5_TURBO
-                    GPT_3_5_TURBO_16K -> Known.GPT_3_5_TURBO_16K
-                    GPT_3_5_TURBO_0301 -> Known.GPT_3_5_TURBO_0301
-                    GPT_3_5_TURBO_0613 -> Known.GPT_3_5_TURBO_0613
-                    GPT_3_5_TURBO_1106 -> Known.GPT_3_5_TURBO_1106
-                    GPT_3_5_TURBO_0125 -> Known.GPT_3_5_TURBO_0125
-                    GPT_3_5_TURBO_16K_0613 -> Known.GPT_3_5_TURBO_16K_0613
-                    else -> throw OmnistackInvalidDataException("Unknown UnionMember1: $value")
-                }
-
-            fun asString(): String = _value().asStringOrThrow()
-        }
+        fun asString(): String = _value().asStringOrThrow()
     }
 
     @JsonDeserialize(using = FunctionCall.Deserializer::class)
@@ -5839,6 +5711,7 @@ constructor(
 
             override fun ObjectCodec.deserialize(node: JsonNode): FunctionCall {
                 val json = JsonValue.fromJsonNode(node)
+
                 tryDeserialize(node, jacksonTypeRef<UnionMember0>())?.let {
                     return FunctionCall(unionMember0 = it, _json = json)
                 }
@@ -6001,7 +5874,7 @@ constructor(
                     }
 
                 fun build(): ChatCompletionFunctionCallOption =
-                    ChatCompletionFunctionCallOption(name, additionalProperties.toUnmodifiable())
+                    ChatCompletionFunctionCallOption(name, additionalProperties.toImmutable())
             }
 
             override fun equals(other: Any?): Boolean {
@@ -6126,7 +5999,7 @@ constructor(
                     description,
                     checkNotNull(name) { "`name` is required but was not set" },
                     parameters,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -6179,7 +6052,7 @@ constructor(
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
-                fun build(): Parameters = Parameters(additionalProperties.toUnmodifiable())
+                fun build(): Parameters = Parameters(additionalProperties.toImmutable())
             }
 
             override fun equals(other: Any?): Boolean {
@@ -6272,7 +6145,7 @@ constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): LogitBias = LogitBias(additionalProperties.toUnmodifiable())
+            fun build(): LogitBias = LogitBias(additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {
@@ -6411,6 +6284,7 @@ constructor(
 
             override fun ObjectCodec.deserialize(node: JsonNode): ResponseFormat {
                 val json = JsonValue.fromJsonNode(node)
+
                 tryDeserialize(node, jacksonTypeRef<ResponseFormatText>()) { it.validate() }
                     ?.let {
                         return ResponseFormat(responseFormatText = it, _json = json)
@@ -6516,7 +6390,7 @@ constructor(
                     }
 
                 fun build(): ResponseFormatText =
-                    ResponseFormatText(type, additionalProperties.toUnmodifiable())
+                    ResponseFormatText(type, additionalProperties.toImmutable())
             }
 
             class Type
@@ -6659,7 +6533,7 @@ constructor(
                     }
 
                 fun build(): ResponseFormatJsonObject =
-                    ResponseFormatJsonObject(type, additionalProperties.toUnmodifiable())
+                    ResponseFormatJsonObject(type, additionalProperties.toImmutable())
             }
 
             class Type
@@ -6821,7 +6695,7 @@ constructor(
                     ResponseFormatJsonSchema(
                         type,
                         jsonSchema,
-                        additionalProperties.toUnmodifiable(),
+                        additionalProperties.toImmutable(),
                     )
             }
 
@@ -7000,7 +6874,7 @@ constructor(
                             name,
                             schema,
                             strict,
-                            additionalProperties.toUnmodifiable(),
+                            additionalProperties.toImmutable(),
                         )
                 }
 
@@ -7055,7 +6929,7 @@ constructor(
                             additionalProperties: Map<String, JsonValue>
                         ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
-                        fun build(): Schema = Schema(additionalProperties.toUnmodifiable())
+                        fun build(): Schema = Schema(additionalProperties.toImmutable())
                     }
 
                     override fun equals(other: Any?): Boolean {
@@ -7314,6 +7188,7 @@ constructor(
 
             override fun ObjectCodec.deserialize(node: JsonNode): Stop {
                 val json = JsonValue.fromJsonNode(node)
+
                 tryDeserialize(node, jacksonTypeRef<String>())?.let {
                     return Stop(string = it, _json = json)
                 }
@@ -7404,7 +7279,7 @@ constructor(
             }
 
             fun build(): StreamOptions =
-                StreamOptions(includeUsage, additionalProperties.toUnmodifiable())
+                StreamOptions(includeUsage, additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {
@@ -7530,6 +7405,7 @@ constructor(
 
             override fun ObjectCodec.deserialize(node: JsonNode): ToolChoice {
                 val json = JsonValue.fromJsonNode(node)
+
                 tryDeserialize(node, jacksonTypeRef<UnionMember0>())?.let {
                     return ToolChoice(unionMember0 = it, _json = json)
                 }
@@ -7714,7 +7590,7 @@ constructor(
                     ChatCompletionNamedToolChoice(
                         type,
                         function,
-                        additionalProperties.toUnmodifiable(),
+                        additionalProperties.toImmutable(),
                     )
             }
 
@@ -7785,7 +7661,7 @@ constructor(
                             this.additionalProperties.putAll(additionalProperties)
                         }
 
-                    fun build(): Function = Function(name, additionalProperties.toUnmodifiable())
+                    fun build(): Function = Function(name, additionalProperties.toImmutable())
                 }
 
                 override fun equals(other: Any?): Boolean {
@@ -7943,7 +7819,7 @@ constructor(
                 Tool(
                     checkNotNull(type) { "`type` is required but was not set" },
                     checkNotNull(function) { "`function` is required but was not set" },
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -8069,7 +7945,7 @@ constructor(
                         checkNotNull(name) { "`name` is required but was not set" },
                         parameters,
                         strict,
-                        additionalProperties.toUnmodifiable(),
+                        additionalProperties.toImmutable(),
                     )
             }
 
@@ -8122,7 +7998,7 @@ constructor(
                             this.additionalProperties.putAll(additionalProperties)
                         }
 
-                    fun build(): Parameters = Parameters(additionalProperties.toUnmodifiable())
+                    fun build(): Parameters = Parameters(additionalProperties.toImmutable())
                 }
 
                 override fun equals(other: Any?): Boolean {

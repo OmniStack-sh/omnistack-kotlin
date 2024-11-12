@@ -21,7 +21,9 @@ import com.omnistack.api.core.JsonField
 import com.omnistack.api.core.JsonValue
 import com.omnistack.api.core.NoAutoDetect
 import com.omnistack.api.core.getOrThrow
-import com.omnistack.api.core.toUnmodifiable
+import com.omnistack.api.core.http.Headers
+import com.omnistack.api.core.http.QueryParams
+import com.omnistack.api.core.toImmutable
 import com.omnistack.api.errors.OmnistackInvalidDataException
 import com.omnistack.api.models.*
 import java.util.Objects
@@ -46,8 +48,8 @@ constructor(
     private val temperature: Double?,
     private val topP: Double?,
     private val user: String?,
-    private val additionalQueryParams: Map<String, List<String>>,
-    private val additionalHeaders: Map<String, List<String>>,
+    private val additionalHeaders: Headers,
+    private val additionalQueryParams: QueryParams,
     private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
@@ -111,9 +113,9 @@ constructor(
         )
     }
 
-    internal fun getQueryParams(): Map<String, List<String>> = additionalQueryParams
+    internal fun getHeaders(): Headers = additionalHeaders
 
-    internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
+    internal fun getQueryParams(): QueryParams = additionalQueryParams
 
     @JsonDeserialize(builder = CompletionCreateBody.Builder::class)
     @NoAutoDetect
@@ -552,7 +554,7 @@ constructor(
                     temperature,
                     topP,
                     user,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -577,9 +579,9 @@ constructor(
             "CompletionCreateBody{model=$model, prompt=$prompt, bestOf=$bestOf, echo=$echo, frequencyPenalty=$frequencyPenalty, logitBias=$logitBias, logprobs=$logprobs, maxTokens=$maxTokens, n=$n, presencePenalty=$presencePenalty, seed=$seed, stop=$stop, stream=$stream, streamOptions=$streamOptions, suffix=$suffix, temperature=$temperature, topP=$topP, user=$user, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalQueryParams(): Map<String, List<String>> = additionalQueryParams
+    fun _additionalHeaders(): Headers = additionalHeaders
 
-    fun _additionalHeaders(): Map<String, List<String>> = additionalHeaders
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
@@ -588,15 +590,15 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is CompletionCreateParams && this.model == other.model && this.prompt == other.prompt && this.bestOf == other.bestOf && this.echo == other.echo && this.frequencyPenalty == other.frequencyPenalty && this.logitBias == other.logitBias && this.logprobs == other.logprobs && this.maxTokens == other.maxTokens && this.n == other.n && this.presencePenalty == other.presencePenalty && this.seed == other.seed && this.stop == other.stop && this.stream == other.stream && this.streamOptions == other.streamOptions && this.suffix == other.suffix && this.temperature == other.temperature && this.topP == other.topP && this.user == other.user && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is CompletionCreateParams && this.model == other.model && this.prompt == other.prompt && this.bestOf == other.bestOf && this.echo == other.echo && this.frequencyPenalty == other.frequencyPenalty && this.logitBias == other.logitBias && this.logprobs == other.logprobs && this.maxTokens == other.maxTokens && this.n == other.n && this.presencePenalty == other.presencePenalty && this.seed == other.seed && this.stop == other.stop && this.stream == other.stream && this.streamOptions == other.streamOptions && this.suffix == other.suffix && this.temperature == other.temperature && this.topP == other.topP && this.user == other.user && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(model, prompt, bestOf, echo, frequencyPenalty, logitBias, logprobs, maxTokens, n, presencePenalty, seed, stop, stream, streamOptions, suffix, temperature, topP, user, additionalQueryParams, additionalHeaders, additionalBodyProperties) /* spotless:on */
+        return /* spotless:off */ Objects.hash(model, prompt, bestOf, echo, frequencyPenalty, logitBias, logprobs, maxTokens, n, presencePenalty, seed, stop, stream, streamOptions, suffix, temperature, topP, user, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
     }
 
     override fun toString() =
-        "CompletionCreateParams{model=$model, prompt=$prompt, bestOf=$bestOf, echo=$echo, frequencyPenalty=$frequencyPenalty, logitBias=$logitBias, logprobs=$logprobs, maxTokens=$maxTokens, n=$n, presencePenalty=$presencePenalty, seed=$seed, stop=$stop, stream=$stream, streamOptions=$streamOptions, suffix=$suffix, temperature=$temperature, topP=$topP, user=$user, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
+        "CompletionCreateParams{model=$model, prompt=$prompt, bestOf=$bestOf, echo=$echo, frequencyPenalty=$frequencyPenalty, logitBias=$logitBias, logprobs=$logprobs, maxTokens=$maxTokens, n=$n, presencePenalty=$presencePenalty, seed=$seed, stop=$stop, stream=$stream, streamOptions=$streamOptions, suffix=$suffix, temperature=$temperature, topP=$topP, user=$user, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -626,8 +628,8 @@ constructor(
         private var temperature: Double? = null
         private var topP: Double? = null
         private var user: String? = null
-        private var additionalQueryParams: MutableMap<String, MutableList<String>> = mutableMapOf()
-        private var additionalHeaders: MutableMap<String, MutableList<String>> = mutableMapOf()
+        private var additionalHeaders: Headers.Builder = Headers.builder()
+        private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
         private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(completionCreateParams: CompletionCreateParams) = apply {
@@ -649,8 +651,8 @@ constructor(
             this.temperature = completionCreateParams.temperature
             this.topP = completionCreateParams.topP
             this.user = completionCreateParams.user
-            additionalQueryParams(completionCreateParams.additionalQueryParams)
             additionalHeaders(completionCreateParams.additionalHeaders)
+            additionalQueryParams(completionCreateParams.additionalQueryParams)
             additionalBodyProperties(completionCreateParams.additionalBodyProperties)
         }
 
@@ -666,16 +668,7 @@ constructor(
          * API to see all of your available models, or see our
          * [Model overview](/docs/models/overview) for descriptions of them.
          */
-        fun model(string: String) = apply { this.model = Model.ofString(string) }
-
-        /**
-         * ID of the model to use. You can use the [List models](/docs/api-reference/models/list)
-         * API to see all of your available models, or see our
-         * [Model overview](/docs/models/overview) for descriptions of them.
-         */
-        fun model(unionMember1: Model.UnionMember1) = apply {
-            this.model = Model.ofUnionMember1(unionMember1)
-        }
+        fun model(value: String) = apply { this.model = Model.of(value) }
 
         /**
          * The prompt(s) to generate completions for, encoded as a string, array of strings, array
@@ -705,7 +698,9 @@ constructor(
          * if a prompt is not specified the model will generate as if from the beginning of a new
          * document.
          */
-        fun prompt(strings: List<String>) = apply { this.prompt = Prompt.ofStrings(strings) }
+        fun promptOfStrings(strings: List<String>) = apply {
+            this.prompt = Prompt.ofStrings(strings)
+        }
 
         /**
          * The prompt(s) to generate completions for, encoded as a string, array of strings, array
@@ -715,7 +710,7 @@ constructor(
          * if a prompt is not specified the model will generate as if from the beginning of a new
          * document.
          */
-        fun prompt(longs: List<Long>) = apply { this.prompt = Prompt.ofLongs(longs) }
+        fun promptOfLongs(longs: List<Long>) = apply { this.prompt = Prompt.ofLongs(longs) }
 
         /**
          * The prompt(s) to generate completions for, encoded as a string, array of strings, array
@@ -725,7 +720,7 @@ constructor(
          * if a prompt is not specified the model will generate as if from the beginning of a new
          * document.
          */
-        fun prompt(longs: List<List<Long>>) = apply { this.prompt = Prompt.ofLongs(longs) }
+        fun promptOfLists(lists: List<List<Long>>) = apply { this.prompt = Prompt.ofLists(lists) }
 
         /**
          * Generates `best_of` completions server-side and returns the "best" (the one with the
@@ -836,7 +831,7 @@ constructor(
          * Up to 4 sequences where the API will stop generating further tokens. The returned text
          * will not contain the stop sequence.
          */
-        fun stop(strings: List<String>) = apply { this.stop = Stop.ofStrings(strings) }
+        fun stopOfStrings(strings: List<String>) = apply { this.stop = Stop.ofStrings(strings) }
 
         /**
          * Whether to stream back partial progress. If set, tokens will be sent as data-only
@@ -882,59 +877,125 @@ constructor(
          */
         fun user(user: String) = apply { this.user = user }
 
-        fun additionalQueryParams(additionalQueryParams: Map<String, List<String>>) = apply {
-            this.additionalQueryParams.clear()
-            putAllQueryParams(additionalQueryParams)
-        }
-
-        fun putQueryParam(name: String, value: String) = apply {
-            this.additionalQueryParams.getOrPut(name) { mutableListOf() }.add(value)
-        }
-
-        fun putQueryParams(name: String, values: Iterable<String>) = apply {
-            this.additionalQueryParams.getOrPut(name) { mutableListOf() }.addAll(values)
-        }
-
-        fun putAllQueryParams(additionalQueryParams: Map<String, Iterable<String>>) = apply {
-            additionalQueryParams.forEach(this::putQueryParams)
-        }
-
-        fun removeQueryParam(name: String) = apply {
-            this.additionalQueryParams.put(name, mutableListOf())
+        fun additionalHeaders(additionalHeaders: Headers) = apply {
+            this.additionalHeaders.clear()
+            putAllAdditionalHeaders(additionalHeaders)
         }
 
         fun additionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
             this.additionalHeaders.clear()
-            putAllHeaders(additionalHeaders)
+            putAllAdditionalHeaders(additionalHeaders)
         }
 
-        fun putHeader(name: String, value: String) = apply {
-            this.additionalHeaders.getOrPut(name) { mutableListOf() }.add(value)
+        fun putAdditionalHeader(name: String, value: String) = apply {
+            additionalHeaders.put(name, value)
         }
 
-        fun putHeaders(name: String, values: Iterable<String>) = apply {
-            this.additionalHeaders.getOrPut(name) { mutableListOf() }.addAll(values)
+        fun putAdditionalHeaders(name: String, values: Iterable<String>) = apply {
+            additionalHeaders.put(name, values)
         }
 
-        fun putAllHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
-            additionalHeaders.forEach(this::putHeaders)
+        fun putAllAdditionalHeaders(additionalHeaders: Headers) = apply {
+            this.additionalHeaders.putAll(additionalHeaders)
         }
 
-        fun removeHeader(name: String) = apply { this.additionalHeaders.put(name, mutableListOf()) }
+        fun putAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
+            this.additionalHeaders.putAll(additionalHeaders)
+        }
+
+        fun replaceAdditionalHeaders(name: String, value: String) = apply {
+            additionalHeaders.replace(name, value)
+        }
+
+        fun replaceAdditionalHeaders(name: String, values: Iterable<String>) = apply {
+            additionalHeaders.replace(name, values)
+        }
+
+        fun replaceAllAdditionalHeaders(additionalHeaders: Headers) = apply {
+            this.additionalHeaders.replaceAll(additionalHeaders)
+        }
+
+        fun replaceAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
+            this.additionalHeaders.replaceAll(additionalHeaders)
+        }
+
+        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
+
+        fun removeAllAdditionalHeaders(names: Set<String>) = apply {
+            additionalHeaders.removeAll(names)
+        }
+
+        fun additionalQueryParams(additionalQueryParams: QueryParams) = apply {
+            this.additionalQueryParams.clear()
+            putAllAdditionalQueryParams(additionalQueryParams)
+        }
+
+        fun additionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) = apply {
+            this.additionalQueryParams.clear()
+            putAllAdditionalQueryParams(additionalQueryParams)
+        }
+
+        fun putAdditionalQueryParam(key: String, value: String) = apply {
+            additionalQueryParams.put(key, value)
+        }
+
+        fun putAdditionalQueryParams(key: String, values: Iterable<String>) = apply {
+            additionalQueryParams.put(key, values)
+        }
+
+        fun putAllAdditionalQueryParams(additionalQueryParams: QueryParams) = apply {
+            this.additionalQueryParams.putAll(additionalQueryParams)
+        }
+
+        fun putAllAdditionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
+            apply {
+                this.additionalQueryParams.putAll(additionalQueryParams)
+            }
+
+        fun replaceAdditionalQueryParams(key: String, value: String) = apply {
+            additionalQueryParams.replace(key, value)
+        }
+
+        fun replaceAdditionalQueryParams(key: String, values: Iterable<String>) = apply {
+            additionalQueryParams.replace(key, values)
+        }
+
+        fun replaceAllAdditionalQueryParams(additionalQueryParams: QueryParams) = apply {
+            this.additionalQueryParams.replaceAll(additionalQueryParams)
+        }
+
+        fun replaceAllAdditionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
+            apply {
+                this.additionalQueryParams.replaceAll(additionalQueryParams)
+            }
+
+        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
+
+        fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
+            additionalQueryParams.removeAll(keys)
+        }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             this.additionalBodyProperties.clear()
-            this.additionalBodyProperties.putAll(additionalBodyProperties)
+            putAllAdditionalBodyProperties(additionalBodyProperties)
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            this.additionalBodyProperties.put(key, value)
+            additionalBodyProperties.put(key, value)
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
             apply {
                 this.additionalBodyProperties.putAll(additionalBodyProperties)
             }
+
+        fun removeAdditionalBodyProperty(key: String) = apply {
+            additionalBodyProperties.remove(key)
+        }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalBodyProperty)
+        }
 
         fun build(): CompletionCreateParams =
             CompletionCreateParams(
@@ -956,186 +1017,73 @@ constructor(
                 temperature,
                 topP,
                 user,
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalBodyProperties.toUnmodifiable(),
+                additionalHeaders.build(),
+                additionalQueryParams.build(),
+                additionalBodyProperties.toImmutable(),
             )
     }
 
-    @JsonDeserialize(using = Model.Deserializer::class)
-    @JsonSerialize(using = Model.Serializer::class)
     class Model
+    @JsonCreator
     private constructor(
-        private val string: String? = null,
-        private val unionMember1: UnionMember1? = null,
-        private val _json: JsonValue? = null,
-    ) {
+        private val value: JsonField<String>,
+    ) : Enum {
 
-        private var validated: Boolean = false
-
-        fun string(): String? = string
-
-        fun unionMember1(): UnionMember1? = unionMember1
-
-        fun isString(): Boolean = string != null
-
-        fun isUnionMember1(): Boolean = unionMember1 != null
-
-        fun asString(): String = string.getOrThrow("string")
-
-        fun asUnionMember1(): UnionMember1 = unionMember1.getOrThrow("unionMember1")
-
-        fun _json(): JsonValue? = _json
-
-        fun <T> accept(visitor: Visitor<T>): T {
-            return when {
-                string != null -> visitor.visitString(string)
-                unionMember1 != null -> visitor.visitUnionMember1(unionMember1)
-                else -> visitor.unknown(_json)
-            }
-        }
-
-        fun validate(): Model = apply {
-            if (!validated) {
-                if (string == null && unionMember1 == null) {
-                    throw OmnistackInvalidDataException("Unknown Model: $_json")
-                }
-                validated = true
-            }
-        }
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
                 return true
             }
 
-            return /* spotless:off */ other is Model && this.string == other.string && this.unionMember1 == other.unionMember1 /* spotless:on */
+            return /* spotless:off */ other is Model && this.value == other.value /* spotless:on */
         }
 
-        override fun hashCode(): Int {
-            return /* spotless:off */ Objects.hash(string, unionMember1) /* spotless:on */
-        }
+        override fun hashCode() = value.hashCode()
 
-        override fun toString(): String {
-            return when {
-                string != null -> "Model{string=$string}"
-                unionMember1 != null -> "Model{unionMember1=$unionMember1}"
-                _json != null -> "Model{_unknown=$_json}"
-                else -> throw IllegalStateException("Invalid Model")
-            }
-        }
+        override fun toString() = value.toString()
 
         companion object {
 
-            fun ofString(string: String) = Model(string = string)
+            val GPT_3_5_TURBO_INSTRUCT = Model(JsonField.of("gpt-3.5-turbo-instruct"))
 
-            fun ofUnionMember1(unionMember1: UnionMember1) = Model(unionMember1 = unionMember1)
+            val DAVINCI_002 = Model(JsonField.of("davinci-002"))
+
+            val BABBAGE_002 = Model(JsonField.of("babbage-002"))
+
+            fun of(value: String) = Model(JsonField.of(value))
         }
 
-        interface Visitor<out T> {
-
-            fun visitString(string: String): T
-
-            fun visitUnionMember1(unionMember1: UnionMember1): T
-
-            fun unknown(json: JsonValue?): T {
-                throw OmnistackInvalidDataException("Unknown Model: $json")
-            }
+        enum class Known {
+            GPT_3_5_TURBO_INSTRUCT,
+            DAVINCI_002,
+            BABBAGE_002,
         }
 
-        class Deserializer : BaseDeserializer<Model>(Model::class) {
-
-            override fun ObjectCodec.deserialize(node: JsonNode): Model {
-                val json = JsonValue.fromJsonNode(node)
-                tryDeserialize(node, jacksonTypeRef<String>())?.let {
-                    return Model(string = it, _json = json)
-                }
-                tryDeserialize(node, jacksonTypeRef<UnionMember1>())?.let {
-                    return Model(unionMember1 = it, _json = json)
-                }
-
-                return Model(_json = json)
-            }
+        enum class Value {
+            GPT_3_5_TURBO_INSTRUCT,
+            DAVINCI_002,
+            BABBAGE_002,
+            _UNKNOWN,
         }
 
-        class Serializer : BaseSerializer<Model>(Model::class) {
-
-            override fun serialize(
-                value: Model,
-                generator: JsonGenerator,
-                provider: SerializerProvider
-            ) {
-                when {
-                    value.string != null -> generator.writeObject(value.string)
-                    value.unionMember1 != null -> generator.writeObject(value.unionMember1)
-                    value._json != null -> generator.writeObject(value._json)
-                    else -> throw IllegalStateException("Invalid Model")
-                }
-            }
-        }
-
-        class UnionMember1
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
-
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return /* spotless:off */ other is UnionMember1 && this.value == other.value /* spotless:on */
+        fun value(): Value =
+            when (this) {
+                GPT_3_5_TURBO_INSTRUCT -> Value.GPT_3_5_TURBO_INSTRUCT
+                DAVINCI_002 -> Value.DAVINCI_002
+                BABBAGE_002 -> Value.BABBAGE_002
+                else -> Value._UNKNOWN
             }
 
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-
-            companion object {
-
-                val GPT_3_5_TURBO_INSTRUCT = UnionMember1(JsonField.of("gpt-3.5-turbo-instruct"))
-
-                val DAVINCI_002 = UnionMember1(JsonField.of("davinci-002"))
-
-                val BABBAGE_002 = UnionMember1(JsonField.of("babbage-002"))
-
-                fun of(value: String) = UnionMember1(JsonField.of(value))
+        fun known(): Known =
+            when (this) {
+                GPT_3_5_TURBO_INSTRUCT -> Known.GPT_3_5_TURBO_INSTRUCT
+                DAVINCI_002 -> Known.DAVINCI_002
+                BABBAGE_002 -> Known.BABBAGE_002
+                else -> throw OmnistackInvalidDataException("Unknown Model: $value")
             }
 
-            enum class Known {
-                GPT_3_5_TURBO_INSTRUCT,
-                DAVINCI_002,
-                BABBAGE_002,
-            }
-
-            enum class Value {
-                GPT_3_5_TURBO_INSTRUCT,
-                DAVINCI_002,
-                BABBAGE_002,
-                _UNKNOWN,
-            }
-
-            fun value(): Value =
-                when (this) {
-                    GPT_3_5_TURBO_INSTRUCT -> Value.GPT_3_5_TURBO_INSTRUCT
-                    DAVINCI_002 -> Value.DAVINCI_002
-                    BABBAGE_002 -> Value.BABBAGE_002
-                    else -> Value._UNKNOWN
-                }
-
-            fun known(): Known =
-                when (this) {
-                    GPT_3_5_TURBO_INSTRUCT -> Known.GPT_3_5_TURBO_INSTRUCT
-                    DAVINCI_002 -> Known.DAVINCI_002
-                    BABBAGE_002 -> Known.BABBAGE_002
-                    else -> throw OmnistackInvalidDataException("Unknown UnionMember1: $value")
-                }
-
-            fun asString(): String = _value().asStringOrThrow()
-        }
+        fun asString(): String = _value().asStringOrThrow()
     }
 
     @JsonDeserialize(using = Prompt.Deserializer::class)
@@ -1145,7 +1093,7 @@ constructor(
         private val string: String? = null,
         private val strings: List<String>? = null,
         private val longs: List<Long>? = null,
-        private val longs: List<List<Long>>? = null,
+        private val lists: List<List<Long>>? = null,
         private val _json: JsonValue? = null,
     ) {
 
@@ -1157,7 +1105,7 @@ constructor(
 
         fun longs(): List<Long>? = longs
 
-        fun longs(): List<List<Long>>? = longs
+        fun lists(): List<List<Long>>? = lists
 
         fun isString(): Boolean = string != null
 
@@ -1165,7 +1113,7 @@ constructor(
 
         fun isLongs(): Boolean = longs != null
 
-        fun isLongs(): Boolean = longs != null
+        fun isLists(): Boolean = lists != null
 
         fun asString(): String = string.getOrThrow("string")
 
@@ -1173,7 +1121,7 @@ constructor(
 
         fun asLongs(): List<Long> = longs.getOrThrow("longs")
 
-        fun asLongs(): List<List<Long>> = longs.getOrThrow("longs")
+        fun asLists(): List<List<Long>> = lists.getOrThrow("lists")
 
         fun _json(): JsonValue? = _json
 
@@ -1182,14 +1130,14 @@ constructor(
                 string != null -> visitor.visitString(string)
                 strings != null -> visitor.visitStrings(strings)
                 longs != null -> visitor.visitLongs(longs)
-                longs != null -> visitor.visitLongs(longs)
+                lists != null -> visitor.visitLists(lists)
                 else -> visitor.unknown(_json)
             }
         }
 
         fun validate(): Prompt = apply {
             if (!validated) {
-                if (string == null && strings == null && longs == null && longs == null) {
+                if (string == null && strings == null && longs == null && lists == null) {
                     throw OmnistackInvalidDataException("Unknown Prompt: $_json")
                 }
                 validated = true
@@ -1201,11 +1149,11 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Prompt && this.string == other.string && this.strings == other.strings && this.longs == other.longs && this.longs == other.longs /* spotless:on */
+            return /* spotless:off */ other is Prompt && this.string == other.string && this.strings == other.strings && this.longs == other.longs && this.lists == other.lists /* spotless:on */
         }
 
         override fun hashCode(): Int {
-            return /* spotless:off */ Objects.hash(string, strings, longs, longs) /* spotless:on */
+            return /* spotless:off */ Objects.hash(string, strings, longs, lists) /* spotless:on */
         }
 
         override fun toString(): String {
@@ -1213,7 +1161,7 @@ constructor(
                 string != null -> "Prompt{string=$string}"
                 strings != null -> "Prompt{strings=$strings}"
                 longs != null -> "Prompt{longs=$longs}"
-                longs != null -> "Prompt{longs=$longs}"
+                lists != null -> "Prompt{lists=$lists}"
                 _json != null -> "Prompt{_unknown=$_json}"
                 else -> throw IllegalStateException("Invalid Prompt")
             }
@@ -1227,7 +1175,7 @@ constructor(
 
             fun ofLongs(longs: List<Long>) = Prompt(longs = longs)
 
-            fun ofLongs(longs: List<List<Long>>) = Prompt(longs = longs)
+            fun ofLists(lists: List<List<Long>>) = Prompt(lists = lists)
         }
 
         interface Visitor<out T> {
@@ -1238,7 +1186,7 @@ constructor(
 
             fun visitLongs(longs: List<Long>): T
 
-            fun visitLongs(longs: List<List<Long>>): T
+            fun visitLists(lists: List<List<Long>>): T
 
             fun unknown(json: JsonValue?): T {
                 throw OmnistackInvalidDataException("Unknown Prompt: $json")
@@ -1249,6 +1197,7 @@ constructor(
 
             override fun ObjectCodec.deserialize(node: JsonNode): Prompt {
                 val json = JsonValue.fromJsonNode(node)
+
                 tryDeserialize(node, jacksonTypeRef<String>())?.let {
                     return Prompt(string = it, _json = json)
                 }
@@ -1259,7 +1208,7 @@ constructor(
                     return Prompt(longs = it, _json = json)
                 }
                 tryDeserialize(node, jacksonTypeRef<List<List<Long>>>())?.let {
-                    return Prompt(longs = it, _json = json)
+                    return Prompt(lists = it, _json = json)
                 }
 
                 return Prompt(_json = json)
@@ -1277,7 +1226,7 @@ constructor(
                     value.string != null -> generator.writeObject(value.string)
                     value.strings != null -> generator.writeObject(value.strings)
                     value.longs != null -> generator.writeObject(value.longs)
-                    value.longs != null -> generator.writeObject(value.longs)
+                    value.lists != null -> generator.writeObject(value.lists)
                     value._json != null -> generator.writeObject(value._json)
                     else -> throw IllegalStateException("Invalid Prompt")
                 }
@@ -1338,7 +1287,7 @@ constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): LogitBias = LogitBias(additionalProperties.toUnmodifiable())
+            fun build(): LogitBias = LogitBias(additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {
@@ -1446,6 +1395,7 @@ constructor(
 
             override fun ObjectCodec.deserialize(node: JsonNode): Stop {
                 val json = JsonValue.fromJsonNode(node)
+
                 tryDeserialize(node, jacksonTypeRef<String>())?.let {
                     return Stop(string = it, _json = json)
                 }
@@ -1536,7 +1486,7 @@ constructor(
             }
 
             fun build(): StreamOptions =
-                StreamOptions(includeUsage, additionalProperties.toUnmodifiable())
+                StreamOptions(includeUsage, additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {
